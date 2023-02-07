@@ -10,3 +10,6 @@ start /web (react, frontend) before, you MUST started /api for backend server (n
 
 3. counselling-booking-master/web/chatroom> npm start 
 	localhost:4000
+=========================================================================
+
+user have to sign up in  respectively
