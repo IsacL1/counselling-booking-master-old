@@ -1,8 +1,8 @@
 import React from 'react'
-import RoomRow from './RoomRow'
-import { roomSorter } from '../helpers/sorter'
+import WorkerRow from './WorkerRow'
+import { workerSorter } from '../helpers/sorter'
 
-const RoomsList = props => (
+const WorkersList = props => (
   <table className="table">
     <tr className="table__row table__row--header">
       <th scope="colgroup" colSpan="15" className="table__cell--header table__cell--level table__cell--align-left">
@@ -11,7 +11,7 @@ const RoomsList = props => (
     </tr>
     <tr className="table__row table__row--subheader">
       <th scope="col" className="table__cell--header table__cell--align-left">
-        Room
+        Worker
       </th>
       <th scope="col" className="table__cell--header">
         8am
@@ -54,15 +54,15 @@ const RoomsList = props => (
       </th>
     </tr>
     <tbody className="table__body">
-      {props.rooms &&
-        roomSorter(props.rooms, '8').map(room => (
-          <RoomRow
-            key={room._id}
-            room={room}
-            bookings={room.bookings}
+      {props.workers &&
+        workerSorter(props.workers, '8').map(worker => (
+          <WorkerRow
+            key={worker._id}
+            worker={worker}
+            bookings={worker.bookings}
             date={props.date === null ? new Date() : props.date}
             onShowBooking={props.onShowBooking}
-            onSetRoom={props.onSetRoom}
+            onSetWorker={props.onSetWorker}
           />
         ))}
     </tbody>
@@ -73,7 +73,7 @@ const RoomsList = props => (
     </tr>
     <tr className="table__row table__row--subheader">
       <th scope="col" className="table__cell--header table__cell--width table__cell--align-left">
-        Room
+        Worker
       </th>
       <th scope="col" className="table__cell--header">
         8am
@@ -116,15 +116,15 @@ const RoomsList = props => (
       </th>
     </tr>
     <tbody className="table__body">
-      {props.rooms &&
-        roomSorter(props.rooms, '13').map(room => (
-          <RoomRow
-            key={room._id}
-            room={room}
-            bookings={room.bookings}
+      {props.workers &&
+        workerSorter(props.workers, '13').map(worker => (
+          <WorkerRow
+            key={worker._id}
+            worker={worker}
+            bookings={worker.bookings}
             date={props.date === null ? new Date() : props.date}
             onShowBooking={props.onShowBooking}
-            onSetRoom={props.onSetRoom}
+            onSetWorker={props.onSetWorker}
           />
         ))
       }
@@ -132,4 +132,4 @@ const RoomsList = props => (
   </table>
 )
 
-export default RoomsList
+export default WorkersList

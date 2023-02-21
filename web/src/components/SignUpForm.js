@@ -14,36 +14,22 @@ function SignUpForm({ onSignUp }) {
       }}
     >
       <div className="form__group">
-        <label className="form__label form__label--padding">
-          {'First Name'}
+        <div className="form__label form__label--padding">
+        <label>First Name</label>
           <input type="text" name="firstName" className="form__input" />
-        </label>
-      </div>
-      <div className="form__group">
-        <label className="form__label form__label--padding">
-          {'Last Name'}
+
+          <label>Last Name</label>
           <input type="text" name="lastName" className="form__input" />
-        </label>
-      </div>
 
-      <div className="form__group">
-        <label className="form__label form__label--padding">
-          {'Display Name'}
+          <label>Display Name</label>
           <input type="text" name="displayName" className="form__input" />
-        </label>
-      </div>
 
-      <div className="form__group">
-        <label className="form__label form__label--padding">
-          {'Email'}
+          <label>Email</label>
           <input type="email" name="email" className="form__input" required />
-        </label>
-      </div>
-      <div className="form__group">
-        <label className="form__label form__label--padding">
-          {'Password'}
+
+          <label>password</label>
           <input type="password" name="password" className="form__input" required />
-        </label>
+        </div>
       </div>
       <button className="button button__form--submit">Sign up</button>
     </form>

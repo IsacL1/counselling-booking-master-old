@@ -2,23 +2,23 @@ const express = require('express')
 const router = new express.Router()
 const moment = require('moment')
 const momentTimezone = require('moment-timezone')
-const Room = require('../models/Room')
+const Worker = require('../models/Worker')
 const { requireJWT } = require('../middleware/auth')
 
-router.get('/rooms', requireJWT, (req, res) => {
-  Room.find()
-    .then(rooms => {
-      res.json(rooms)
+router.get('/workers', requireJWT, (req, res) => {
+  Worker.find()
+    .then(workers => {
+      res.json(workers)
     })
     .catch(error => {
       res.json({ error })
     })
 })
 
-router.post('/rooms', requireJWT, (req, res) => {
-  Room.create(req.body)
-    .then(room => {
-      res.status(201).json(room)
+router.post('/workers', requireJWT, (req, res) => {
+  Worker.create(req.body)
+    .then(worker => {
+      res.status(201).json(worker)
     })
     .catch(error => {
       res.status(400).json({ error })
@@ -42,12 +42,12 @@ const durationHours = (bookingStart, bookingEnd) => {
 }
 
 // Make a booking
-router.put('/rooms/:id', requireJWT, (req, res) => {
+router.put('/workers/:id', requireJWT, (req, res) => {
   const { id } = req.params
 
   // If the recurring array is empty, the booking is not recurring
   if (req.body.recurring.length === 0) {
-    Room.findByIdAndUpdate(
+    Worker.findByIdAndUpdate(
       id,
       {
         $addToSet: {
@@ -64,8 +64,8 @@ router.put('/rooms/:id', requireJWT, (req, res) => {
       },
       { new: true, runValidators: true, context: 'query' }
     )
-      .then(room => {
-        res.status(201).json(room)
+      .then(worker => {
+        res.status(201).json(worker)
       })
       .catch(error => {
         res.status(400).json({ error })
@@ -127,8 +127,8 @@ router.put('/rooms/:id', requireJWT, (req, res) => {
     }
     
 
-    // Find the relevant room and save the bookings
-    Room.findByIdAndUpdate(
+    // Find the relevant worker and save the bookings
+    Worker.findByIdAndUpdate(
       id,
       {
         $push: {
@@ -140,8 +140,8 @@ router.put('/rooms/:id', requireJWT, (req, res) => {
       },
       { new: true, runValidators: true, context: 'query' }
     )
-      .then(room => {
-        res.status(201).json(room)
+      .then(worker => {
+        res.status(201).json(worker)
       })
       .catch(error => {
         res.status(400).json({ error })
@@ -150,16 +150,16 @@ router.put('/rooms/:id', requireJWT, (req, res) => {
 })
 
 // Delete a booking
-router.delete('/rooms/:id/:bookingId', requireJWT, (req, res) => {
+router.delete('/workers/:id/:bookingId', requireJWT, (req, res) => {
   const { id } = req.params
   const { bookingId } = req.params
-  Room.findByIdAndUpdate(
+  Worker.findByIdAndUpdate(
     id,
     { $pull: { bookings: { _id: bookingId } } },
     { new: true }
   )
-    .then(room => {
-      res.status(201).json(room)
+    .then(worker => {
+      res.status(201).json(worker)
     })
     .catch(error => {
       res.status(400).json({ error })

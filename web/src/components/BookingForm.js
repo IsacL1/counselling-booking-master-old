@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom'
 import Button from './Button'
 import { formatTime, startTimeSelectOptions, endTimeSelectOptions } from '../helpers/bookingForm'
 
-function BookingForm({ onMakeBooking, user, roomData, date, updateCalendar, onShowBooking, disableRecurring, onToggleRecurring }) {
+function BookingForm({ onMakeBooking, user, workerData, date, updateCalendar, onShowBooking, disableRecurring, onToggleRecurring }) {
   // Disable sunday (day 0) on the calendar as an booking option
   const valid = function(current) {
     return current.day() !== 0
@@ -44,7 +44,7 @@ function BookingForm({ onMakeBooking, user, roomData, date, updateCalendar, onSh
   return (
     <Fragment>
       <div className="header__page">
-        <h2 className="header__heading header__heading--sub">Level {roomData.floor} | {roomData.name}</h2>
+        <h2 className="header__heading header__heading--sub">Level {workerData.floor} | {workerData.name}</h2>
       </div>
       <form className="form__grid form--booking" onSubmit={event => {
           event.preventDefault()
@@ -56,7 +56,7 @@ function BookingForm({ onMakeBooking, user, roomData, date, updateCalendar, onSh
             dateArray[1] = dateArray[1] - 1
             // Data from input
             const formData = event.target.elements
-            const roomId = roomData._id
+            const workerId = workerData._id
             // startDate data
             const startTime = formatTime(formData.startTime.value)
             const startDate = [...dateArray, ...startTime]
@@ -71,7 +71,7 @@ function BookingForm({ onMakeBooking, user, roomData, date, updateCalendar, onSh
             const purpose = formData.purpose.value
             const description = formData.description.value
             console.log(description)
-          onMakeBooking({ startDate, endDate, businessUnit, purpose, roomId, recurringData })
+          onMakeBooking({ startDate, endDate, businessUnit, purpose, workerId, recurringData })
         }}>
         <div className="content__calendar">
           <Datetime
@@ -84,7 +84,7 @@ function BookingForm({ onMakeBooking, user, roomData, date, updateCalendar, onSh
         />
         </div>
         <div className="content__table">
-          <BookingFormTable roomData={roomData} date={date} onShowBooking={onShowBooking} />
+          <BookingFormTable workerData={workerData} date={date} onShowBooking={onShowBooking} />
         </div>
         <div className="content__form">
           <h3 className="header__heading header__heading--column">Make a Booking</h3>

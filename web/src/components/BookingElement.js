@@ -2,15 +2,15 @@ import React from 'react'
 import moment from 'moment'
 import momentTimezone from 'moment-timezone'
 import Button from './Button'
-import { findRoomInfo } from '../helpers/bookingForm.js'
+import { findWorkerInfo } from '../helpers/bookingForm.js'
 
 function BookingElement({
   bookingData,
   onDeleteBooking,
-  roomData
+  workerData
 }) {
 
-  const roomInfo = findRoomInfo(bookingData.roomId, roomData)
+  const workerInfo = findWorkerInfo(bookingData.workerId, workerData)
   const startTime = momentTimezone.tz(bookingData.bookingStart, 'Australia/Sydney').format('h.mma')
   const endTime = momentTimezone.tz(bookingData.bookingEnd, 'Australia/Sydney').format('h.mma')
 
@@ -24,11 +24,11 @@ function BookingElement({
       <div className="booking__innerbox--middle">
         <p>From {startTime} to {endTime}</p>
         <p>Duration {bookingData.duration}hrs</p>
-        <p>Level {roomInfo.floor}, {roomInfo.name}</p>
+        <p>Level {workerInfo.floor}, {workerInfo.name}</p>
       </div>
       <div className="booking__innerbox--right">
         <Button
-          onClick={() => onDeleteBooking(bookingData.roomId, bookingData._id)}
+          onClick={() => onDeleteBooking(bookingData.workerId, bookingData._id)}
           text={`Delete`}
         />
       </div>

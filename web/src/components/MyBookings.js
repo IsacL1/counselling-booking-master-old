@@ -6,7 +6,7 @@ function MyBookings({
   user,
   userBookings,
   onDeleteBooking,
-  roomData
+  workerData
 }) {
 
   return (
@@ -21,7 +21,7 @@ function MyBookings({
             Object.keys(userBookings).map(key =>
               <BookingElement
                 key={key}
-                roomData={roomData}
+                workerData={workerData}
                 bookingData={userBookings[key]}
                 onDeleteBooking={onDeleteBooking}
               />)

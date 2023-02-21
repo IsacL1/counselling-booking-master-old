@@ -1,9 +1,9 @@
-const Room = require('./Room')
+const Worker = require('./Worker')
 
-Room.create([
+Worker.create([
   // Level 8
   {
-    name: 'Room 1',
+    name: 'Worker 1',
     floor: '8',
     capacity: 18,
     assets: {
@@ -11,7 +11,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 2',
+    name: 'Worker 2',
     floor: '8',
     capacity: 18,
     assets: {
@@ -19,7 +19,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 3',
+    name: 'Worker 3',
     floor: '8',
     capacity: 18,
     assets: {
@@ -28,12 +28,12 @@ Room.create([
     }
   },
   {
-    name: 'Room 4',
+    name: 'Worker 4',
     floor: '8',
     capacity: 24
   },
   {
-    name: 'Room 5',
+    name: 'Worker 5',
     floor: '8',
     capacity: 18,
     assets: {
@@ -41,37 +41,37 @@ Room.create([
     }
   },
   {
-    name: 'Room 6',
+    name: 'Worker 6',
     floor: '8',
     capacity: 18
   },
   {
-    name: 'Room 7',
+    name: 'Worker 7',
     floor: '8',
     capacity: 18
   },
   {
-    name: 'Room 8',
+    name: 'Worker 8',
     floor: '8',
     capacity: 18
   },
   {
-    name: 'Room 9',
+    name: 'Worker 9',
     floor: '8',
     capacity: 18
   },
   {
-    name: 'Room 10',
+    name: 'Worker 10',
     floor: '8',
     capacity: 18
   },
   {
-    name: 'Room 11',
+    name: 'Worker 11',
     floor: '8',
     capacity: 18
   },
   {
-    name: 'Room 12',
+    name: 'Worker 12',
     floor: '8',
     capacity: 18,
     assets: {
@@ -79,12 +79,12 @@ Room.create([
     }
   },
   {
-    name: 'Room 13',
+    name: 'Worker 13',
     floor: '8',
     capacity: 18
   },
   {
-    name: 'Room 14',
+    name: 'Worker 14',
     floor: '8',
     capacity: 18,
     assets: {
@@ -92,7 +92,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 15',
+    name: 'Worker 15',
     floor: '8',
     capacity: 18,
     assets: {
@@ -134,7 +134,7 @@ Room.create([
   },
   // Level 13
   {
-    name: 'Room 1',
+    name: 'Worker 1',
     floor: '13',
     capacity: 20,
     assets: {
@@ -142,7 +142,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 2',
+    name: 'Worker 2',
     floor: '13',
     capacity: 20,
     assets: {
@@ -150,7 +150,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 3',
+    name: 'Worker 3',
     floor: '13',
     capacity: 20,
     assets: {
@@ -158,7 +158,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 4',
+    name: 'Worker 4',
     floor: '13',
     capacity: 20,
     assets: {
@@ -167,7 +167,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 5',
+    name: 'Worker 5',
     floor: '13',
     capacity: 20,
     assets: {
@@ -175,7 +175,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 6',
+    name: 'Worker 6',
     floor: '13',
     capacity: 20,
     assets: {
@@ -183,7 +183,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 7',
+    name: 'Worker 7',
     floor: '13',
     capacity: 20,
     assets: {
@@ -191,7 +191,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 8/9',
+    name: 'Worker 8/9',
     floor: '13',
     capacity: 40,
     assets: {
@@ -199,22 +199,22 @@ Room.create([
     }
   },
   {
-    name: 'Room 10',
+    name: 'Worker 10',
     floor: '13',
     capacity: 16
   },
   {
-    name: 'Room 11',
+    name: 'Worker 11',
     floor: '13',
     capacity: 20
   },
   {
-    name: 'Room 12',
+    name: 'Worker 12',
     floor: '13',
     capacity: 20
   },
   {
-    name: 'Room 13',
+    name: 'Worker 13',
     floor: '13',
     capacity: 20,
     assets: {
@@ -222,7 +222,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 14',
+    name: 'Worker 14',
     floor: '13',
     capacity: 20,
     assets: {
@@ -230,7 +230,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 15',
+    name: 'Worker 15',
     floor: '13',
     capacity: 20,
     assets: {
@@ -238,7 +238,7 @@ Room.create([
     }
   },
   {
-    name: 'Room 16',
+    name: 'Worker 16',
     floor: '13',
     capacity: 20,
     assets: {
@@ -246,17 +246,17 @@ Room.create([
     }
   },
   {
-    name: 'Room 17',
+    name: 'Worker 17',
     floor: '13',
     capacity: 20
   },
   {
-    name: 'Room 18',
+    name: 'Worker 18',
     floor: '13',
     capacity: 20
   },
   {
-    name: 'Green Screen Room',
+    name: 'Green Screen Worker',
     floor: '13',
     capacity: null,
     assets: {
@@ -264,8 +264,8 @@ Room.create([
     }
   }
 ])
-  .then(rooms => {
-    console.log(`Created ${rooms.length} rooms.`)
+  .then(workers => {
+    console.log(`Created ${workers.length} workers.`)
   })
   .catch(error => {
     console.error(error)

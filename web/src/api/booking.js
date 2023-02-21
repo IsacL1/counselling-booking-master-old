@@ -9,7 +9,7 @@ const dateUTC = (dataArray) => {
   return momentTimezone(dataArray).tz('Australia/Sydney').toDate()
 }
 
-// Make a room booking
+// Make a worker booking
 export function makeBooking(data, existingBookings) {
   // Convert booking data to UTC Date objects
   let bookingStart = dateUTC(data.startDate)
@@ -45,12 +45,12 @@ export function makeBooking(data, existingBookings) {
 
   // Save the booking to the database and return the booking if there are no clashes and the new booking time is not in the past
   if (!bookingClash && validDate && validRecurring) {
-    return api.put(`/rooms/${data.roomId}`, {
+    return api.put(`/workers/${data.workerId}`, {
       bookingStart: bookingStart,
       bookingEnd: bookingEnd,
       businessUnit: data.businessUnit,
       purpose: data.purpose,
-      roomId: data.roomId,
+      workerId: data.workerId,
       recurring: data.recurringData
     })
       .then(res => res.data)
@@ -58,26 +58,26 @@ export function makeBooking(data, existingBookings) {
   }
 }
 
-// Delete a room booking
-export function deleteBooking(roomId, bookingId) {
-  return api.delete(`/rooms/${roomId}/${bookingId}`)
+// Delete a worker booking
+export function deleteBooking(workerId, bookingId) {
+  return api.delete(`/workers/${workerId}/${bookingId}`)
     .then(res => res.data)
 }
 
-export function updateStateRoom(self, updatedRoom, loadMyBookings) {
+export function updateStateWorker(self, updatedWorker, loadMyBookings) {
   self.setState((previousState) => {
-    // Find the relevant room in React State and replace it with the new room data
-    const updatedRoomData = previousState.roomData.map((room) => {
-      if (room._id === updatedRoom._id) {
-        return updatedRoom
+    // Find the relevant worker in React State and replace it with the new worker data
+    const updatedWorkerData = previousState.workerData.map((worker) => {
+      if (worker._id === updatedWorker._id) {
+        return updatedWorker
       } else {
-        return room
+        return worker
       }
     })
     return {
-      // Update the room data in application state
-      roomData: updatedRoomData,
-      currentRoom: updatedRoom
+      // Update the worker data in application state
+      workerData: updatedWorkerData,
+      currentWorker: updatedWorker
     }
   })
   loadMyBookings()

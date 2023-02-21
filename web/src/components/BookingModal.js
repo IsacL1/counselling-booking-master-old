@@ -2,13 +2,13 @@ import React from 'react'
 import ReactModal from 'react-modal'
 import momentTimezone from 'moment-timezone'
 import Button from './Button'
-import { findRoomInfo } from '../helpers/bookingForm.js'
+import { findWorkerInfo } from '../helpers/bookingForm.js'
 
 const BookingModal = props => {
   const deleteBooking = () => {
-    const roomID = props.selectedBooking.roomId
+    const workerID = props.selectedBooking.workerId
     const bookingID = props.selectedBooking._id
-    props.onDeleteBooking(roomID, bookingID)
+    props.onDeleteBooking(workerID, bookingID)
     props.onCloseBooking()
   }
   return (
@@ -26,8 +26,8 @@ const BookingModal = props => {
       <h3 className="modal__title">Booking Details</h3>
       {!!props.selectedBooking && (
         <div className="modal__boday">
-          <p className="modal__paragraph">{findRoomInfo(props.selectedBooking.roomId, props.roomData).name}{', Level '}
-          {findRoomInfo(props.selectedBooking.roomId, props.roomData).floor}</p>
+          <p className="modal__paragraph">{findWorkerInfo(props.selectedBooking.workerId, props.workerData).name}{', Level '}
+          {findWorkerInfo(props.selectedBooking.workerId, props.workerData).floor}</p>
           <p className="modal__paragraph">{`${momentTimezone
               .tz(props.selectedBooking['bookingStart'], 'Australia/Sydney')
             .format('h.mma')} to ${momentTimezone

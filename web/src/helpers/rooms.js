@@ -17,9 +17,9 @@ const formatAssetName = asset => {
   }
 }
 
-// Accepts the search date in 'YYYY/MM/DD' format and all of a room's bookings and filters the array for bookings that match the search date
-const dailyBookings = (currentDate, roomBookings) => {
-  const filteredBookings = roomBookings.filter(
+// Accepts the search date in 'YYYY/MM/DD' format and all of a worker's bookings and filters the array for bookings that match the search date
+const dailyBookings = (currentDate, workerBookings) => {
+  const filteredBookings = workerBookings.filter(
     (
       booking // Check if the booking is for the current date
     ) =>
@@ -29,7 +29,7 @@ const dailyBookings = (currentDate, roomBookings) => {
   return filteredBookings
 }
 
-// A function to take the bookings for a particular room on a given date and insert them into an array which maps each hour of that day
+// A function to take the bookings for a particular worker on a given date and insert them into an array which maps each hour of that day
 const bookingArray = (filteredBookings) => {
   // An array from 1 to 24 representing each hour of the day
   let dayHours = [...Array(24).keys()]
