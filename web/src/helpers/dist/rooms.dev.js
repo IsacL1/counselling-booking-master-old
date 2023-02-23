@@ -19,32 +19,48 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
+// Case catgory: family issue, study issue, health Issue, relationship issue
+// case = origin version's asset
 var formatAssetName = function formatAssetName(asset) {
-  if (asset === 'opWalls') {
-    return 'Operable Walls';
-  } else if (asset === 'pcLab') {
-    return 'PC Lab';
-  } else if (asset === 'macLab') {
-    return 'Mac Lab';
-  } else if (asset === 'tv') {
-    return 'TV';
-  } else if (asset === 'whiteBoard') {
-    return 'Whiteboard';
-  } else if (asset === 'projector') {
-    return 'Projector';
+  if (asset === 'famIsu') {
+    return 'Family Issue';
+  } else if (asset === 'stdIsu') {
+    return 'Study Issue';
+  } else if (asset === 'healIsu') {
+    return 'health Issue';
+  } else if (asset === 'relatIsu') {
+    return 'Relationship Issue';
   }
-}; // Accepts the search date in 'YYYY/MM/DD' format and all of a worker's bookings and filters the array for bookings that match the search date
+};
+/*
+const formatAssetName = asset => {
+  if (asset === 'opWalls') {
+    return 'Operable Walls'
+  } else if (asset === 'pcLab') {
+    return 'PC Lab'
+  } else if (asset === 'macLab') {
+    return 'Mac Lab'
+  } else if (asset === 'tv') {
+    return 'TV'
+  } else if (asset === 'whiteBoard') {
+    return 'Whiteboard'
+  } else if (asset === 'projector') {
+    return 'Projector'
+  }
+}
+*/
+// Accepts the search date in 'YYYY/MM/DD' format and all of a room's bookings and filters the array for bookings that match the search date
 
 
 exports.formatAssetName = formatAssetName;
 
-var dailyBookings = function dailyBookings(currentDate, workerBookings) {
-  var filteredBookings = workerBookings.filter(function (booking // Check if the booking is for the current date
+var dailyBookings = function dailyBookings(currentDate, roomBookings) {
+  var filteredBookings = roomBookings.filter(function (booking // Check if the booking is for the current date
   ) {
     return (0, _moment["default"])(booking.bookingStart).format('YYYY-MM-DD') === (0, _moment["default"])(currentDate).format('YYYY-MM-DD');
   });
   return filteredBookings;
-}; // A function to take the bookings for a particular worker on a given date and insert them into an array which maps each hour of that day
+}; // A function to take the bookings for a particular room on a given date and insert them into an array which maps each hour of that day
 
 
 exports.dailyBookings = dailyBookings;

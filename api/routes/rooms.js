@@ -2,23 +2,24 @@ const express = require('express')
 const router = new express.Router()
 const moment = require('moment')
 const momentTimezone = require('moment-timezone')
-const Worker = require('../models/Worker')
+const Room = require('../models/Room')
 const { requireJWT } = require('../middleware/auth')
+const HKTimeZone = 'Asia/Hong_Kong'
 
-router.get('/workers', requireJWT, (req, res) => {
-  Worker.find()
-    .then(workers => {
-      res.json(workers)
+router.get('/rooms', requireJWT, (req, res) => {
+  Room.find()
+    .then(rooms => {
+      res.json(rooms)
     })
     .catch(error => {
       res.json({ error })
     })
 })
 
-router.post('/workers', requireJWT, (req, res) => {
-  Worker.create(req.body)
-    .then(worker => {
-      res.status(201).json(worker)
+router.post('/rooms', requireJWT, (req, res) => {
+  Room.create(req.body)
+    .then(room => {
+      res.status(201).json(room)
     })
     .catch(error => {
       res.status(400).json({ error })
@@ -27,7 +28,7 @@ router.post('/workers', requireJWT, (req, res) => {
 
 // Function to convert UTC JS Date object to a Moment.js object in AEST
 const dateAEST = date => {
-  return momentTimezone(date).tz('Australia/Sydney')
+  return momentTimezone(date).tz(HKTimeZone)
 }
 
 // Function to calculate the duration of the hours between the start and end of the booking
@@ -42,12 +43,12 @@ const durationHours = (bookingStart, bookingEnd) => {
 }
 
 // Make a booking
-router.put('/workers/:id', requireJWT, (req, res) => {
+router.put('/rooms/:id', requireJWT, (req, res) => {
   const { id } = req.params
 
   // If the recurring array is empty, the booking is not recurring
   if (req.body.recurring.length === 0) {
-    Worker.findByIdAndUpdate(
+    Room.findByIdAndUpdate(
       id,
       {
         $addToSet: {
@@ -64,8 +65,8 @@ router.put('/workers/:id', requireJWT, (req, res) => {
       },
       { new: true, runValidators: true, context: 'query' }
     )
-      .then(worker => {
-        res.status(201).json(worker)
+      .then(room => {
+        res.status(201).json(room)
       })
       .catch(error => {
         res.status(400).json({ error })
@@ -84,10 +85,10 @@ router.put('/workers/:id', requireJWT, (req, res) => {
     let recurringBookings = [ firstBooking ]
     
     // A Moment.js object to track each date in the recurring range, initialised with the first date
-    let bookingDateTracker = momentTimezone(firstBooking.bookingStart).tz('Australia/Sydney')
+    let bookingDateTracker = momentTimezone(firstBooking.bookingStart).tz(HKTimeZone)
     
     // A Moment.js date object for the final booking date in the recurring booking range - set to one hour ahead of the first booking - to calculate the number of days/weeks/months between the first and last bookings when rounded down
-    let lastBookingDate = momentTimezone(firstBooking.recurring[0]).tz('Australia/Sydney')
+    let lastBookingDate = momentTimezone(firstBooking.recurring[0]).tz(HKTimeZone)
     lastBookingDate.hour(bookingDateTracker.hour() + 1)
     
     // The number of subsequent bookings in the recurring booking date range 
@@ -114,7 +115,7 @@ router.put('/workers/:id', requireJWT, (req, res) => {
         let newBooking = Object.assign({}, firstBooking)
         
         // Calculate the end date/time of the new booking by adding the number of units to the first booking's end date/time
-        let firstBookingEndDate = momentTimezone(firstBooking.bookingEnd).tz('Australia/Sydney')
+        let firstBookingEndDate = momentTimezone(firstBooking.bookingEnd).tz(HKTimeZone)
         let proposedBookingDateEnd = firstBookingEndDate.add(i + 1, units)
         
         // Update the new booking object's start and end dates
@@ -127,8 +128,8 @@ router.put('/workers/:id', requireJWT, (req, res) => {
     }
     
 
-    // Find the relevant worker and save the bookings
-    Worker.findByIdAndUpdate(
+    // Find the relevant room and save the bookings
+    Room.findByIdAndUpdate(
       id,
       {
         $push: {
@@ -140,8 +141,8 @@ router.put('/workers/:id', requireJWT, (req, res) => {
       },
       { new: true, runValidators: true, context: 'query' }
     )
-      .then(worker => {
-        res.status(201).json(worker)
+      .then(room => {
+        res.status(201).json(room)
       })
       .catch(error => {
         res.status(400).json({ error })
@@ -150,16 +151,16 @@ router.put('/workers/:id', requireJWT, (req, res) => {
 })
 
 // Delete a booking
-router.delete('/workers/:id/:bookingId', requireJWT, (req, res) => {
+router.delete('/rooms/:id/:bookingId', requireJWT, (req, res) => {
   const { id } = req.params
   const { bookingId } = req.params
-  Worker.findByIdAndUpdate(
+  Room.findByIdAndUpdate(
     id,
     { $pull: { bookings: { _id: bookingId } } },
     { new: true }
   )
-    .then(worker => {
-      res.status(201).json(worker)
+    .then(room => {
+      res.status(201).json(room)
     })
     .catch(error => {
       res.status(400).json({ error })

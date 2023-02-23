@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import { formatAssetName, dailyBookings, bookingArray } from '../helpers/workers'
+import { formatAssetName, dailyBookings, bookingArray } from '../helpers/rooms'
 
-// Accept the 24 hour dayHours array as the day's booking data for a worker
+// Accept the 24 hour dayHours array as the day's booking data for a room
 const rowMapper = (dayHours, props) => {
   let tableRow = []
 
@@ -16,7 +16,7 @@ const rowMapper = (dayHours, props) => {
     if (typeof bookingData === 'number') {
       tableRow.push(<td className="table__cell--available">
           <Link to="/createbooking" onClick={() => {
-              props.onSetWorker(props.worker._id)
+              props.onSetRoom(props.room._id)
         }} className="table__link--available">
             &nbsp;
           </Link>
@@ -40,6 +40,7 @@ const rowMapper = (dayHours, props) => {
                 <span
                   onClick={() => props.onShowBooking(firstBookingData)}
                   className={`table__cell--booked table__cell--${firstBookingData.businessUnit // Class name will show the business unit that made the booking, and whether the <td> element should be fully shaded, or half shaded (indicating a half-hour booking)
+                  //className={`table__cell--booked table__cell--${firstBookingData.emergencyLv // Class name will show the business unit that made the booking, and whether the <td> element should be fully shaded, or half shaded (indicating a half-hour booking)
                     .replace(/ /g, '-')
                     .toLowerCase()}
                   `}
@@ -51,6 +52,7 @@ const rowMapper = (dayHours, props) => {
                 <span
                   onClick={() => props.onShowBooking(secondBookingData)}
                   className={`table__cell--booked table__cell--${secondBookingData.businessUnit // Class name will show the business unit that made the booking, and whether the <td> element should be fully shaded, or half shaded (indicating a half-hour booking)
+                  //className={`table__cell--booked table__cell--${secondBookingData.emergencyLv // Class name will show the business unit that made the booking, and whether the <td> element should be fully shaded, or half shaded (indicating a half-hour booking)
                     .replace(/ /g, '-')
                     .toLowerCase()}
                   `}
@@ -70,6 +72,7 @@ const rowMapper = (dayHours, props) => {
           <span
             onClick={() => props.onShowBooking(bookingData)}
             className={`table__cell--booked table__cell--${bookingData.businessUnit // Class name will show the business unit that made the booking, and whether the <td> element should be fully shaded, or half shaded (indicating a half-hour booking)
+            //className={`table__cell--booked table__cell--${bookingData.emergencyLv // Class name will show the business unit that made the booking, and whether the <td> element should be fully shaded, or half shaded (indicating a half-hour booking)
               .replace(/ /g, '-')
               .toLowerCase()}
             ${bookingData.firstHalfHour ? 'table__cell--first-half-hour' : ''}
@@ -86,14 +89,15 @@ const rowMapper = (dayHours, props) => {
   return tableRow
 }
 
-const WorkerRow = props => (
+const RoomRow = props => (
   <tr className="table__row">
     <th scope="row" className="table__cell--align-left">
-      <Link to="/createbooking" onClick={() => props.onSetWorker(props.worker._id)} className="table__link">{props.worker.name}</Link>
+      <Link to="/createbooking" onClick={() => props.onSetRoom(props.room._id)} className="table__link">{props.room.name}</Link>
       <ul >
-      {Object.keys(props.worker.assets).map(
+      {Object.keys(props.room.assets).map(
         asset =>
-          props.worker.assets[asset] && (
+          props.room.cases[asset] && (
+            //<li key={asset} onClick={props.onShowBooking} className="table__data--asset">{formatAssetName(asset)}</li>
             <li key={asset} onClick={props.onShowBooking} className="table__data--asset">{formatAssetName(asset)}</li>
             )
           )}
@@ -106,4 +110,4 @@ const WorkerRow = props => (
   </tr>
 )
 
-export default WorkerRow
+export default RoomRow

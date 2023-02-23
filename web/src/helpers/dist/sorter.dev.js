@@ -3,46 +3,46 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.workerSorter = void 0;
+exports.roomSorter = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var workerSorter = function workerSorter(workerList, floorNumber) {
-  var copiedList = workerList.slice(0); // filter list of workers to those on the given floor
+var roomSorter = function roomSorter(roomList, floorNumber) {
+  var copiedList = roomList.slice(0); // filter list of rooms to those on the given floor
 
-  var filteredList = copiedList.filter(function (worker) {
-    return worker.floor === floorNumber;
-  }); // function to sort workers numerically by their floor number
+  var filteredList = copiedList.filter(function (room) {
+    return room.floor === floorNumber;
+  }); // function to sort rooms numerically by their floor number
 
-  var numericalSort = function numericalSort(workerList) {
-    return workerList.sort(function (first, second) {
-      var firstWorker = first.name.replace(/\D+/, '');
-      var secondWorker = second.name.replace(/\D+/, '');
+  var numericalSort = function numericalSort(roomList) {
+    return roomList.sort(function (first, second) {
+      var firstRoom = first.name.replace(/\D+/, '');
+      var secondRoom = second.name.replace(/\D+/, '');
 
-      if (parseInt(firstWorker, 10) > parseInt(secondWorker, 10)) {
+      if (parseInt(firstRoom, 10) > parseInt(secondRoom, 10)) {
         return 1;
       } else {
         return 0;
       }
     });
-  }; // numerically sort a new array with each worker named 'Worker'
+  }; // numerically sort a new array with each room named 'Room'
 
 
-  var nameWorker = numericalSort(filteredList.filter(function (worker) {
-    return worker.name[0] === 'R';
-  })); // numerically sort a new array with each worker named 'Studio'
+  var nameRoom = numericalSort(filteredList.filter(function (room) {
+    return room.name[0] === 'R';
+  })); // numerically sort a new array with each room named 'Studio'
 
-  var nameStudio = numericalSort(filteredList.filter(function (worker) {
-    return worker.name[0] === 'S';
-  })); // numerically sort a new array with all other named worker types
+  var nameStudio = numericalSort(filteredList.filter(function (room) {
+    return room.name[0] === 'S';
+  })); // numerically sort a new array with all other named room types
 
-  var nameOther = numericalSort(filteredList.filter(function (worker) {
-    return worker.name[0] !== 'S' && worker.name[0] !== 'R';
-  })); // re-combine the sorted workers, studios and others into a single array
+  var nameOther = numericalSort(filteredList.filter(function (room) {
+    return room.name[0] !== 'S' && room.name[0] !== 'R';
+  })); // re-combine the sorted rooms, studios and others into a single array
 
-  return nameWorker.concat(nameStudio).concat(nameOther);
+  return nameRoom.concat(nameStudio).concat(nameOther);
 };
 
-exports.workerSorter = workerSorter;
+exports.roomSorter = roomSorter;

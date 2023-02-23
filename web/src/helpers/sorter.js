@@ -1,20 +1,20 @@
 import React from 'react'
 
-export const workerSorter = (workerList, floorNumber) => {
+export const roomSorter = (roomList, floorNumber) => {
   
-  let copiedList = workerList.slice(0)
+  let copiedList = roomList.slice(0)
   
-  // filter list of workers to those on the given floor
-  let filteredList = copiedList.filter(worker => {
-    return worker.floor === floorNumber
+  // filter list of rooms to those on the given floor
+  let filteredList = copiedList.filter(room => {
+    return room.floor === floorNumber
   })
   
-  // function to sort workers numerically by their floor number
-  const numericalSort = workerList => { 
-    return workerList.sort((first, second) => {
-      const firstWorker = first.name.replace(/\D+/, '')
-      const secondWorker = second.name.replace(/\D+/, '')
-      if (parseInt(firstWorker, 10) > parseInt(secondWorker, 10)) {
+  // function to sort rooms numerically by their floor number
+  const numericalSort = roomList => { 
+    return roomList.sort((first, second) => {
+      const firstRoom = first.name.replace(/\D+/, '')
+      const secondRoom = second.name.replace(/\D+/, '')
+      if (parseInt(firstRoom, 10) > parseInt(secondRoom, 10)) {
         return 1
       } else {
         return 0
@@ -22,21 +22,21 @@ export const workerSorter = (workerList, floorNumber) => {
     })
   }
   
-  // numerically sort a new array with each worker named 'Worker'
-  let nameWorker = numericalSort(
-    filteredList.filter(worker => worker.name[0] === 'R')
+  // numerically sort a new array with each room named 'Room'
+  let nameRoom = numericalSort(
+    filteredList.filter(room => room.name[0] === 'R')
   )
   
-  // numerically sort a new array with each worker named 'Studio'
+  // numerically sort a new array with each room named 'Studio'
   let nameStudio = numericalSort(
-    filteredList.filter(worker => worker.name[0] === 'S')
+    filteredList.filter(room => room.name[0] === 'S')
   )
   
-  // numerically sort a new array with all other named worker types
+  // numerically sort a new array with all other named room types
   let nameOther = numericalSort(
-    filteredList.filter(worker => worker.name[0] !== 'S' && worker.name[0] !== 'R')
+    filteredList.filter(room => room.name[0] !== 'S' && room.name[0] !== 'R')
   )
   
-  // re-combine the sorted workers, studios and others into a single array
-  return nameWorker.concat(nameStudio).concat(nameOther)
+  // re-combine the sorted rooms, studios and others into a single array
+  return nameRoom.concat(nameStudio).concat(nameOther)
 }

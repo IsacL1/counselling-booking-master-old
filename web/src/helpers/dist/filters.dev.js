@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.onFilterByAvailablity = exports.onFilterByCapacity = exports.onFilterByFeature = exports.onFilterByFloor = exports.capacityParams = exports.filterParams = exports.floorParams = void 0;
+exports.onFilterByAvailablity = exports.onFilterByCapacity = exports.onFilterByFeature = exports.onFilterByFloor = exports.capacityParams = exports.filterParams = void 0;
 
 var _moment = _interopRequireDefault(require("moment"));
 
@@ -19,58 +19,46 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-var floorParams = [{
-  name: '8',
-  value: false
-}, {
-  name: '13',
-  value: false
-}, {
-  name: 'all',
-  value: false
-}]; // initial feature filter parameters
-
-exports.floorParams = floorParams;
 var filterParams = [{
-  name: 'macLab',
+  name: 'famIsu',
   value: false
 }, {
-  name: 'pcLab',
+  name: 'stuIsu',
   value: false
 }, {
-  name: 'tv',
+  name: 'healIsu',
   value: false
 }, {
-  name: 'opWalls',
+  name: 'relatIsu',
   value: false
-}, {
-  name: 'projector',
-  value: false
-}]; // Initial Capacity parameters
+}];
+/*
+export const filterParams = [ 
+  {name: 'macLab', value: false},
+  {name: 'pcLab', value: false},
+  {name: 'tv', value: false},
+  {name: 'opWalls', value: false},
+  {name: 'projector', value: false} ]
+*/
+// Initial Capacity parameters
 
 exports.filterParams = filterParams;
 var capacityParams = [{
-  capacity: 16,
-  id: '16seats',
+  capacity: 1,
+  id: '1seat',
   value: false
-}, {
-  capacity: 18,
-  id: '18seats',
-  value: false
-}, {
-  capacity: 20,
-  id: '20seats',
-  value: false
-}, {
-  capacity: 24,
-  id: '24seats',
-  value: false
-}, {
-  capacity: 40,
-  id: '40seats',
-  value: false
-}]; // Filtering Functions
-// Filter workerData by floor
+}];
+/*
+export const capacityParams = [
+  {capacity: 16, id: '16seats', value: false},
+  {capacity: 18, id: '18seats', value: false},
+  {capacity: 20, id: '20seats', value: false},
+  {capacity: 24, id: '24seats', value: false},
+  {capacity: 40, id: '40seats', value: false},
+]
+*/
+// Filtering Functions
+// Filter roomData by floor
 
 exports.capacityParams = capacityParams;
 
@@ -78,8 +66,8 @@ var onFilterByFloor = function onFilterByFloor(param, filteredData) {
   if (param === 'all') {
     return filteredData;
   } else {
-    return filteredData.filter(function (worker) {
-      return worker.floor === param;
+    return filteredData.filter(function (room) {
+      return room.floor === param;
     });
   }
 }; // Filter data by feature
@@ -89,46 +77,61 @@ exports.onFilterByFloor = onFilterByFloor;
 
 var onFilterByFeature = function onFilterByFeature(params, filteredData) {
   params.forEach(function (feature) {
-    if (feature.name === 'macLab' && feature.value === true) {
-      filteredData = filteredData.filter(function (worker) {
-        return worker.assets.macLab === true;
+    if (feature.name === 'famIsu' && feature.value === true) {
+      filteredData = filteredData.filter(function (room) {
+        return room.assets.famIsu === true;
       });
-    } else if (feature.name === 'pcLab' && feature.value === true) {
-      filteredData = filteredData.filter(function (worker) {
-        return worker.assets.pcLab === true;
+    } else if (feature.name === 'stdIsu' && feature.value === true) {
+      filteredData = filteredData.filter(function (room) {
+        return room.assets.stdIsu === true;
       });
-    } else if (feature.name === 'tv' && feature.value === true) {
-      filteredData = filteredData.filter(function (worker) {
-        return worker.assets.tv === true;
+    } else if (feature.name === 'healIsu' && feature.value === true) {
+      filteredData = filteredData.filter(function (room) {
+        return room.assets.healIsu === true;
       });
-    } else if (feature.name === 'opWall' && feature.value === true) {
-      filteredData = filteredData.filter(function (worker) {
-        return worker.assets.opWalls === true;
-      });
-    } else if (feature.name === 'projector' && feature.value === true) {
-      filteredData = filteredData.filter(function (worker) {
-        return worker.assets.projector === true;
+    } else if (feature.name === 'relatIsu' && feature.value === true) {
+      filteredData = filteredData.filter(function (room) {
+        return room.assets.relatIsu === true;
       });
     }
   });
   return filteredData;
-}; // Filter data by capacity
+};
+/*
+export const onFilterByFeature = (params, filteredData) => {
+  params.forEach(feature => {
+    if (feature.name === 'macLab' && feature.value === true) {
+      filteredData = filteredData.filter(room => room.assets.macLab === true)
+    } else if (feature.name === 'pcLab' && feature.value === true) {
+      filteredData = filteredData.filter(room => room.assets.pcLab === true)
+    } else if (feature.name === 'tv' && feature.value === true) {
+      filteredData = filteredData.filter(room => room.assets.tv === true)
+    } else if (feature.name === 'opWall' && feature.value === true) {
+      filteredData = filteredData.filter(room => room.assets.opWalls === true)
+    } else if (feature.name === 'projector' && feature.value === true) {
+      filteredData = filteredData.filter(room => room.assets.projector === true)
+    }
+  })
+  return filteredData
+}
+*/
+// Filter data by capacity
 
 
 exports.onFilterByFeature = onFilterByFeature;
 
 var onFilterByCapacity = function onFilterByCapacity(params, filteredData) {
-  var workersByCapacity = [];
+  var roomsByCapacity = [];
   params.forEach(function (capacity) {
     if (capacity.value === true) {
-      workersByCapacity.push.apply(workersByCapacity, _toConsumableArray(filteredData.filter(function (worker) {
-        return worker.capacity === capacity.capacity;
+      roomsByCapacity.push.apply(roomsByCapacity, _toConsumableArray(filteredData.filter(function (room) {
+        return room.capacity === capacity.capacity;
       })));
     }
   });
 
-  if (workersByCapacity.length > 0) {
-    return workersByCapacity;
+  if (roomsByCapacity.length > 0) {
+    return roomsByCapacity;
   } else {
     return filteredData;
   }
@@ -139,18 +142,18 @@ exports.onFilterByCapacity = onFilterByCapacity;
 
 var onFilterByAvailablity = function onFilterByAvailablity(params, filteredData) {
   if (params === 'fullyAvail') {
-    filteredData = filteredData.filter(function (worker) {
-      return worker.bookings.length === 0;
+    filteredData = filteredData.filter(function (room) {
+      return room.bookings.length === 0;
     });
   } else if (params === 'partAvail') {
-    filteredData = filteredData.filter(function (worker) {
-      return worker.bookings.length > 0;
+    filteredData = filteredData.filter(function (room) {
+      return room.bookings.length > 0;
     });
   } else if (params === 'fullBooked') {
-    filteredData = !filteredData.filter(function (worker) {
-      return worker.bookings.length > 0;
-    }) && !filteredData.filter(function (worker) {
-      return worker.bookings.length === 0;
+    filteredData = !filteredData.filter(function (room) {
+      return room.bookings.length > 0;
+    }) && !filteredData.filter(function (room) {
+      return room.bookings.length === 0;
     });
   }
 

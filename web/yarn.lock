@@ -6446,7 +6446,7 @@ jest-cli@^20.0.4:
     string-length "^1.0.1"
     throat "^3.0.0"
     which "^1.2.12"
-    worker-farm "^1.3.1"
+    room-farm "^1.3.1"
     yargs "^7.0.2"
 
 jest-config@^20.0.4:
@@ -6501,7 +6501,7 @@ jest-haste-map@^20.0.4:
     jest-docblock "^20.0.3"
     micromatch "^2.3.11"
     sane "~1.6.0"
-    worker-farm "^1.3.1"
+    room-farm "^1.3.1"
 
 jest-jasmine2@^20.0.4:
   version "20.0.4"
@@ -6615,9 +6615,9 @@ jest-validate@^20.0.3:
     leven "^2.1.0"
     pretty-format "^20.0.3"
 
-jest-worker@^27.4.5:
+jest-room@^27.4.5:
   version "27.5.1"
-  resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-27.5.1.tgz#8d146f0900e8973b106b6f73cc1e9a8cb86f8db0"
+  resolved "https://registry.yarnpkg.com/jest-room/-/jest-room-27.5.1.tgz#8d146f0900e8973b106b6f73cc1e9a8cb86f8db0"
   integrity sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==
   dependencies:
     "@types/node" "*"
@@ -9299,9 +9299,9 @@ serve-static@1.15.0:
     parseurl "~1.3.3"
     send "0.18.0"
 
-serviceworker-cache-polyfill@^4.0.0:
+serviceroom-cache-polyfill@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.yarnpkg.com/serviceworker-cache-polyfill/-/serviceworker-cache-polyfill-4.0.0.tgz#de19ee73bef21ab3c0740a37b33db62464babdeb"
+  resolved "https://registry.yarnpkg.com/serviceroom-cache-polyfill/-/serviceroom-cache-polyfill-4.0.0.tgz#de19ee73bef21ab3c0740a37b33db62464babdeb"
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
@@ -9808,7 +9808,7 @@ sw-toolbox@^3.4.0:
   resolved "https://registry.yarnpkg.com/sw-toolbox/-/sw-toolbox-3.6.0.tgz#26df1d1c70348658e4dea2884319149b7b3183b5"
   dependencies:
     path-to-regexp "^1.0.1"
-    serviceworker-cache-polyfill "^4.0.0"
+    serviceroom-cache-polyfill "^4.0.0"
 
 symbol-tree@^3.2.1:
   version "3.2.2"
@@ -9861,7 +9861,7 @@ terser-webpack-plugin@^5.1.3:
   integrity sha512-kfLFk+PoLUQIbLmB1+PZDMRSZS99Mp+/MHqDNmMA6tOItzRt+Npe3E+fsMs5mfcM0wCtrrdU387UnV+vnSffXQ==
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.14"
-    jest-worker "^27.4.5"
+    jest-room "^27.4.5"
     schema-utils "^3.1.1"
     serialize-javascript "^6.0.0"
     terser "^5.14.1"
@@ -10604,9 +10604,9 @@ wordwrap@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
 
-worker-farm@^1.3.1:
+room-farm@^1.3.1:
   version "1.5.2"
-  resolved "https://registry.yarnpkg.com/worker-farm/-/worker-farm-1.5.2.tgz#32b312e5dc3d5d45d79ef44acc2587491cd729ae"
+  resolved "https://registry.yarnpkg.com/room-farm/-/room-farm-1.5.2.tgz#32b312e5dc3d5d45d79ef44acc2587491cd729ae"
   dependencies:
     errno "^0.1.4"
     xtend "^4.0.1"

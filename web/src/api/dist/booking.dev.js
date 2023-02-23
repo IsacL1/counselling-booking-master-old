@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.makeBooking = makeBooking;
 exports.deleteBooking = deleteBooking;
-exports.updateStateWorker = updateStateWorker;
+exports.updateStateRoom = updateStateRoom;
 
 var _moment = _interopRequireDefault(require("moment"));
 
@@ -15,12 +15,13 @@ var _init = _interopRequireDefault(require("./init"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-// Function to receive booking data (AEST) and convert to JS Date object
+var HKTimeZone = 'Asia/Hong_Kong'; // Function to receive booking data (AEST) and convert to JS Date object
 // Data expected in [year, month, date, hours, seconds] format
+
 var dateUTC = function dateUTC(dataArray) {
   // Ensure date data is saved in AEST and then converted to a Date object in UTC
-  return (0, _momentTimezone["default"])(dataArray).tz('Australia/Sydney').toDate();
-}; // Make a worker booking
+  return (0, _momentTimezone["default"])(dataArray).tz(HKTimeZone).toDate();
+}; // Make a room booking
 
 
 function makeBooking(data, existingBookings) {
@@ -48,42 +49,44 @@ function makeBooking(data, existingBookings) {
   var validRecurring = data.recurringData.length > 0 ? dateUTC(data.recurringData[0]).getTime() > newBookingEnd : true; // Save the booking to the database and return the booking if there are no clashes and the new booking time is not in the past
 
   if (!bookingClash && validDate && validRecurring) {
-    return _init["default"].put("/workers/".concat(data.workerId), {
+    return _init["default"].put("/rooms/".concat(data.roomId), {
       bookingStart: bookingStart,
       bookingEnd: bookingEnd,
-      businessUnit: data.businessUnit,
-      purpose: data.purpose,
-      workerId: data.workerId,
-      recurring: data.recurringData
+      issue: data.issue,
+      emergencyLv: data.emergencyLv,
+      //businessUnit: data.businessUnit,
+      //purpose: data.purpose,
+      roomId: data.roomId //recurring: data.recurringData
+
     }).then(function (res) {
       return res.data;
     })["catch"](function (err) {
       return alert(err.response.data.error.message.match(/error:.+/i)[0]);
     });
   }
-} // Delete a worker booking
+} // Delete a room booking
 
 
-function deleteBooking(workerId, bookingId) {
-  return _init["default"]["delete"]("/workers/".concat(workerId, "/").concat(bookingId)).then(function (res) {
+function deleteBooking(roomId, bookingId) {
+  return _init["default"]["delete"]("/rooms/".concat(roomId, "/").concat(bookingId)).then(function (res) {
     return res.data;
   });
 }
 
-function updateStateWorker(self, updatedWorker, loadMyBookings) {
+function updateStateRoom(self, updatedRoom, loadMyBookings) {
   self.setState(function (previousState) {
-    // Find the relevant worker in React State and replace it with the new worker data
-    var updatedWorkerData = previousState.workerData.map(function (worker) {
-      if (worker._id === updatedWorker._id) {
-        return updatedWorker;
+    // Find the relevant room in React State and replace it with the new room data
+    var updatedRoomData = previousState.roomData.map(function (room) {
+      if (room._id === updatedRoom._id) {
+        return updatedRoom;
       } else {
-        return worker;
+        return room;
       }
     });
     return {
-      // Update the worker data in application state
-      workerData: updatedWorkerData,
-      currentWorker: updatedWorker
+      // Update the room data in application state
+      roomData: updatedRoomData,
+      currentRoom: updatedRoom
     };
   });
   loadMyBookings();

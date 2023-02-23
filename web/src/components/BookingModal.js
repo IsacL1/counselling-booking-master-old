@@ -2,13 +2,15 @@ import React from 'react'
 import ReactModal from 'react-modal'
 import momentTimezone from 'moment-timezone'
 import Button from './Button'
-import { findWorkerInfo } from '../helpers/bookingForm.js'
+import { findRoomInfo } from '../helpers/bookingForm.js'
+
+const HKTimeZone = 'Asia/Hong_Kong'
 
 const BookingModal = props => {
   const deleteBooking = () => {
-    const workerID = props.selectedBooking.workerId
+    const roomID = props.selectedBooking.roomId
     const bookingID = props.selectedBooking._id
-    props.onDeleteBooking(workerID, bookingID)
+    props.onDeleteBooking(roomID, bookingID)
     props.onCloseBooking()
   }
   return (
@@ -26,19 +28,24 @@ const BookingModal = props => {
       <h3 className="modal__title">Booking Details</h3>
       {!!props.selectedBooking && (
         <div className="modal__boday">
-          <p className="modal__paragraph">{findWorkerInfo(props.selectedBooking.workerId, props.workerData).name}{', Level '}
-          {findWorkerInfo(props.selectedBooking.workerId, props.workerData).floor}</p>
+          <p className="modal__paragraph">
+            {findRoomInfo(props.selectedBooking.roomId, props.roomData).name}
+            {', Level '}
+            {findRoomInfo(props.selectedBooking.roomId, props.roomData).floor}
+          </p>
           <p className="modal__paragraph">{`${momentTimezone
-              .tz(props.selectedBooking['bookingStart'], 'Australia/Sydney')
+              .tz(props.selectedBooking['bookingStart'], HKTimeZone)
             .format('h.mma')} to ${momentTimezone
-              .tz(props.selectedBooking['bookingEnd'], 'Australia/Sydney')
+              .tz(props.selectedBooking['bookingEnd'], HKTimeZone)
               .format('h.mma')}`}
-            <p className="modal__paragraph">{`${momentTimezone.tz(props.selectedBooking['bookingStart'], 'Australia/Sydney').format('MMMM Do, YYYY')} to ${momentTimezone.tz(props.selectedBooking['bookingEnd'], 'Australia/Sydney').format('MMMM Do, YYYY')}`}
+            <p className="modal__paragraph">{`${momentTimezone.tz(props.selectedBooking['bookingStart'], HKTimeZone).format('MMMM Do, YYYY')} to ${momentTimezone.tz(props.selectedBooking['bookingEnd'], HKTimeZone).format('MMMM Do, YYYY')}`}
           </p>
           </p>
-          <p className="modal__paragraph"><strong>Business Unit </strong>{props.selectedBooking['businessUnit']}</p>
-          <p className="modal__paragraph"><strong>Purpose </strong>{props.selectedBooking['purpose']}</p>
-          <p className="modal__paragraph"><strong>Description </strong>{props.selectedBooking['description']}</p>
+          <p className="modal__paragraph"><strong>Emergency Level</strong>{props.selectedBooking['emergencyLv']}</p>
+          {/*<p className="modal__paragraph"><strong>Business Unit </strong>{props.selectedBooking['businessUnit']}</p>*/}
+          <p className="modal__paragraph"><strong>Issue</strong>{props.selectedBooking['issue']}</p>
+          {/*<p className="modal__paragraph"><strong>Purpose </strong>{props.selectedBooking['purpose']}</p>*/}
+          <p className="modal__paragraph"><strong>Description</strong>{props.selectedBooking['description']}</p>
         </div>
       )}
       <a href={`mailto:${props.user}`} className="button">Contact</a>

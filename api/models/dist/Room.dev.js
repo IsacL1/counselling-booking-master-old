@@ -16,24 +16,38 @@ var bookingSchema = new Schema({
   bookingEnd: Date,
   startHour: Number,
   duration: Number,
-  recurring: [],
-  businessUnit: {
+  issue: {
     type: String,
     required: true
   },
-  purpose: {
+  emergencyLv: {
     type: String,
     required: true
   },
-  workerId: {
+  roomId: {
     type: Schema.ObjectId,
-    ref: 'Worker'
+    ref: 'Room'
   }
-}); // Validation to ensure a worker cannot be double-booked
+});
+/*
+const bookingSchema = new Schema({
+  _bookingId: Schema.Types.ObjectId,
+  user: { type: Schema.ObjectId, ref: 'User' },
+  bookingStart: Date,
+  bookingEnd: Date,
+  startHour: Number,
+  duration: Number,
+  recurring: [],
+  businessUnit: { type: String, required: true },
+  purpose: { type: String, required: true },
+  roomId: { type: Schema.ObjectId, ref: 'Room' }
+})
+*/
+// Validation to ensure a room cannot be double-booked
 
 bookingSchema.path('bookingStart').validate(function (value) {
-  // Extract the Worker Id from the query object
-  var workerId = this.workerId; // Convert booking Date objects into a number value
+  // Extract the Room Id from the query object
+  var roomId = this.roomId; // Convert booking Date objects into a number value
 
   var newBookingStart = value.getTime();
   var newBookingEnd = this.bookingEnd.getTime(); // Function to check for booking clash
@@ -47,12 +61,13 @@ bookingSchema.path('bookingStart').validate(function (value) {
     }
 
     return false;
-  }; // Locate the worker document containing the bookings
+  }; // Locate the room document containing the bookings
+  // return Room.findById(roomId).then(room => {
 
 
-  return Worker.findById(workerId).then(function (worker) {
+  return Room.findById(roomId).then(function (room) {
     // Loop through each existing booking and return false if there is a clash
-    return worker.bookings.every(function (booking) {
+    return room.bookings.every(function (booking) {
       // Convert existing booking Date objects into number values
       var existingBookingStart = new Date(booking.bookingStart).getTime();
       var existingBookingEnd = new Date(booking.bookingEnd).getTime(); // Check whether there is a clash between the new booking and the existing booking
@@ -60,8 +75,9 @@ bookingSchema.path('bookingStart').validate(function (value) {
       return !clashesWithExisting(existingBookingStart, existingBookingEnd, newBookingStart, newBookingEnd);
     });
   });
-}, "{REASON}");
-var workerSchema = new Schema({
+}, "{REASON}"); // Case catgory: family issue, study issue, health Issue, relationship issue
+
+var roomSchema = new Schema({
   name: {
     type: String,
     index: true,
@@ -72,32 +88,35 @@ var workerSchema = new Schema({
     required: true
   },
   capacity: Number,
-  assets: {
-    macLab: {
+  cases: {
+    famIsu: {
       type: Boolean,
       "default": false
     },
-    pcLab: {
+    stdIsu: {
       type: Boolean,
       "default": false
     },
-    projector: {
+    healIsu: {
       type: Boolean,
       "default": false
     },
-    tv: {
-      type: Boolean,
-      "default": false
-    },
-    opWalls: {
-      type: Boolean,
-      "default": false
-    },
-    whiteBoard: {
+    relatIsu: {
       type: Boolean,
       "default": false
     }
   },
+
+  /*
+  assets: {
+    macLab: { type: Boolean, default: false },
+    pcLab: { type: Boolean, default: false },
+    projector: { type: Boolean, default: false },
+    tv: { type: Boolean, default: false },
+    opWalls: { type: Boolean, default: false },
+    whiteBoard: { type: Boolean, default: false }
+  },
+  */
   bookings: [bookingSchema]
 });
-var Worker = module.exports = mongoose.model('Worker', workerSchema);
+var Room = module.exports = mongoose.model('Room', roomSchema);

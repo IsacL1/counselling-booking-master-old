@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom'
 import Button from './Button'
 import { formatTime, startTimeSelectOptions, endTimeSelectOptions } from '../helpers/bookingForm'
 
-function BookingForm({ onMakeBooking, user, workerData, date, updateCalendar, onShowBooking, disableRecurring, onToggleRecurring }) {
+function BookingForm({ onMakeBooking, user, roomData, date, updateCalendar, onShowBooking, disableRecurring, onToggleRecurring }) {
   // Disable sunday (day 0) on the calendar as an booking option
   const valid = function(current) {
     return current.day() !== 0
@@ -44,7 +44,8 @@ function BookingForm({ onMakeBooking, user, workerData, date, updateCalendar, on
   return (
     <Fragment>
       <div className="header__page">
-        <h2 className="header__heading header__heading--sub">Level {workerData.floor} | {workerData.name}</h2>
+        {/*<h2 className="header__heading header__heading--sub">Level {roomData.floor} | {roomData.name}</h2>*/}
+        <h2 className="header__heading header__heading--sub">Classroom {roomData.floor} | Worker {roomData.name}</h2>    
       </div>
       <form className="form__grid form--booking" onSubmit={event => {
           event.preventDefault()
@@ -56,7 +57,7 @@ function BookingForm({ onMakeBooking, user, workerData, date, updateCalendar, on
             dateArray[1] = dateArray[1] - 1
             // Data from input
             const formData = event.target.elements
-            const workerId = workerData._id
+            const roomId = roomData._id
             // startDate data
             const startTime = formatTime(formData.startTime.value)
             const startDate = [...dateArray, ...startTime]
@@ -64,14 +65,17 @@ function BookingForm({ onMakeBooking, user, workerData, date, updateCalendar, on
             const endTime = formatTime(formData.endTime.value)
             const endDate = [...dateArray, ...endTime]
             // Booking specifics
-            const businessUnit = formData.business.value
-            let recurringEnd = handleEndDate(formData.recurringEndDate.value.split('-'))
-            const recurringType = formData.recurring.value
-            let recurringData = handleRecurringData(recurringType, recurringEnd)
-            const purpose = formData.purpose.value
+            const emergencyLv = formData.emergencyLv.value
+            //const businessUnit = formData.business.value
+            //let recurringEnd = handleEndDate(formData.recurringEndDate.value.split('-'))
+            //const recurringType = formData.recurring.value
+            //let recurringData = handleRecurringData(recurringType, recurringEnd)
+            const issue = formData.issue.value
+            //const purpose = formData.purpose.value
             const description = formData.description.value
             console.log(description)
-          onMakeBooking({ startDate, endDate, businessUnit, purpose, workerId, recurringData })
+          //onMakeBooking({ startDate, endDate, businessUnit, purpose, roomId, recurringData })
+          onMakeBooking({ startDate, endDate, issue, emergencyLv, roomId })
         }}>
         <div className="content__calendar">
           <Datetime
@@ -84,7 +88,7 @@ function BookingForm({ onMakeBooking, user, workerData, date, updateCalendar, on
         />
         </div>
         <div className="content__table">
-          <BookingFormTable workerData={workerData} date={date} onShowBooking={onShowBooking} />
+          <BookingFormTable roomData={roomData} date={date} onShowBooking={onShowBooking} />
         </div>
         <div className="content__form">
           <h3 className="header__heading header__heading--column">Make a Booking</h3>
@@ -108,6 +112,8 @@ function BookingForm({ onMakeBooking, user, workerData, date, updateCalendar, on
               </select>
             </label>
           </div>
+          
+          {/*
           <div className="form__group">
             <label className="form__label form__label--booking">
               {'Business Unit'}
@@ -120,6 +126,19 @@ function BookingForm({ onMakeBooking, user, workerData, date, updateCalendar, on
               </select>
             </label>
           </div>
+          */}
+          <div className="form__group">
+            <label className="form__label form__label--booking">
+              {'Emergency Level'}
+              <select name="emergencyLv" defaultValue="Do not know" className="form__input form__input--select">
+                <option value="doNotKnow">Do not know</option>
+                <option value="high">High</option>
+                <option value="midium">Midium</option>
+                <option value="low">Low</option>
+              </select>
+            </label>
+          </div>
+          {/*
           <div className="form__group">
             <label className="form__label form__label--booking">
               {'Recurring'}
@@ -133,10 +152,28 @@ function BookingForm({ onMakeBooking, user, workerData, date, updateCalendar, on
               </span>
             </label>
           </div>
+        */}
+        {/** Copy from Purpose */}
+          <div className="form__group">
+            <label className="form__label form__label--booking">
+              {'Issue'}
+              <select name="issue" className="form__input form__input--select">
+                <option value="famIsu">Family Issue</option>
+                <option value="stdIsu">Study Issue</option>
+                <option value="healIsu">health Issue</option>
+                <option value="relatIsu">Relationship Issue</option>
+              </select>
+            </label>
+          </div>
+      
+        {/*
           <label className="form__label form__label--booking">
             {'Recurring end date'}
             <input type="date" name="recurringEndDate" disabled={disableRecurring} className="form__input--date"/>
           </label>
+      */}
+
+      {/*
           <div className="form__group">
             <label className="form__label form__label--booking">
               {'Purpose'}
@@ -147,12 +184,14 @@ function BookingForm({ onMakeBooking, user, workerData, date, updateCalendar, on
               </select>
             </label>
           </div>
+      */}
           <div className="form__group">
             <label className="form__label form__label--booking">
               {'Description'}
               <textarea type="textarea" name="description" className="form__input--textarea"></textarea>
             </label>
           </div>
+
           <div className="form__group--button">
             <Button className="button button__form--booking" text={'Submit'} />
             <Link to="/bookings" className="button button--alternative button__form--booking" >View availability</Link>

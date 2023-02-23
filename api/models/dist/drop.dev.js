@@ -1,11 +1,11 @@
 "use strict";
 
-var Worker = require('./Worker');
+var Room = require('./Room');
 
 var User = require('./User');
 
-Worker.deleteMany().then(function () {
-  console.log('Deleted workers');
+Room.deleteMany().then(function () {
+  console.log('Deleted rooms');
   process.exit();
 });
 User.deleteMany().then(function () {

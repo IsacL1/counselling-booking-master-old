@@ -11,11 +11,13 @@ const { signUp, signIn, signJWTForUser, requireJWT } = require('./middleware/aut
 const config = require('./config')
 
 const server = express()
-const workersRouter = require('./routes/workers')
+const roomsRouter = require('./routes/rooms')
 const authRouter = require('./routes/auth')
-const Worker = require('./models/Worker')
+//const Worker = require('./models/Room')
+const Room = require('./models/Room')
 const momentTimezone = require('moment-timezone')
 const moment = require('moment')
+const HKTimeZone = 'Asia/Hong_Kong'
 
 // Middleware
 server.use(bodyParser.json())
@@ -23,28 +25,30 @@ server.use(cors({ credentials: true }))
 server.use(authMiddleware.initialize)
 
 // Routes
-// server.use([require('./routes/auth'), require('./routes/workers')])
-// server.use('./routes/workers')
-// server.use('/workers', workersRouter)
+// server.use([require('./routes/auth'), require('./routes/rooms')])
+// server.use('./routes/rooms')
+// server.use('/rooms', roomsRouter)
 
 server.post('/auth', signIn, signJWTForUser)
 server.post('/auth/sign-up', signUp, signJWTForUser)
-server.use('/workers', workersRouter)
+server.use('/rooms', roomsRouter)
 
-server.get('/workers', requireJWT, (req, res) => {
-  Worker.find()
-    .then(workers => {
-      res.json(workers)
+server.get('/rooms', requireJWT, (req, res) => {
+  Room.find()
+  //Worker.find()
+    .then(rooms => {
+      res.json(rooms)
     })
     .catch(error => {
       res.json({ error })
     })
 })
 
-server.post('/workers', requireJWT, (req, res) => {
-  Worker.create(req.body)
-    .then(worker => {
-      res.status(201).json(worker)
+server.post('/rooms', requireJWT, (req, res) => {
+  Room.create(req.body)
+  //Worker.create(req.body)
+    .then(room => {
+      res.status(201).json(room)
     })
     .catch(error => {
       res.status(400).json({ error })
@@ -53,7 +57,7 @@ server.post('/workers', requireJWT, (req, res) => {
 
 // Function to convert UTC JS Date object to a Moment.js object in AEST
 const dateAEST = date => {
-  return momentTimezone(date).tz('Australia/Sydney')
+  return momentTimezone(date).tz(HKTimeZone)
 }
 
 // Function to calculate the duration of the hours between the start and end of the booking
@@ -68,12 +72,13 @@ const durationHours = (bookingStart, bookingEnd) => {
 }
 
 // Make a booking
-server.put('/workers/:id', requireJWT, (req, res) => {
+server.put('/rooms/:id', requireJWT, (req, res) => {
   const { id } = req.params
 
   // If the recurring array is empty, the booking is not recurring
   if (req.body.recurring.length === 0) {
-    Worker.findByIdAndUpdate(
+    Room.findByIdAndUpdate(
+    //Worker.findByIdAndUpdate(
       id,
       {
         $addToSet: {
@@ -90,8 +95,8 @@ server.put('/workers/:id', requireJWT, (req, res) => {
       },
       { new: true, runValidators: true, context: 'query' }
     )
-      .then(worker => {
-        res.status(201).json(worker)
+      .then(room => {
+        res.status(201).json(room)
       })
       .catch(error => {
         res.status(400).json({ error })
@@ -110,10 +115,10 @@ server.put('/workers/:id', requireJWT, (req, res) => {
     let recurringBookings = [ firstBooking ]
 
     // A Moment.js object to track each date in the recurring range, initialised with the first date
-    let bookingDateTracker = momentTimezone(firstBooking.bookingStart).tz('Australia/Sydney')
+    let bookingDateTracker = momentTimezone(firstBooking.bookingStart).tz(HKTimeZone)
 
     // A Moment.js date object for the final booking date in the recurring booking range - set to one hour ahead of the first booking - to calculate the number of days/weeks/months between the first and last bookings when rounded down
-    let lastBookingDate = momentTimezone(firstBooking.recurring[0]).tz('Australia/Sydney')
+    let lastBookingDate = momentTimezone(firstBooking.recurring[0]).tz(HKTimeZone)
     lastBookingDate.hour(bookingDateTracker.hour() + 1)
 
     // The number of subsequent bookings in the recurring booking date range
@@ -140,7 +145,7 @@ server.put('/workers/:id', requireJWT, (req, res) => {
         let newBooking = Object.assign({}, firstBooking)
 
         // Calculate the end date/time of the new booking by adding the number of units to the first booking's end date/time
-        let firstBookingEndDate = momentTimezone(firstBooking.bookingEnd).tz('Australia/Sydney')
+        let firstBookingEndDate = momentTimezone(firstBooking.bookingEnd).tz(HKTimeZone)
         let proposedBookingDateEnd = firstBookingEndDate.add(i + 1, units)
 
         // Update the new booking object's start and end dates
@@ -153,8 +158,9 @@ server.put('/workers/:id', requireJWT, (req, res) => {
     }
 
 
-    // Find the relevant worker and save the bookings
-    Worker.findByIdAndUpdate(
+    // Find the relevant room and save the bookings
+    Room.findByIdAndUpdate(
+    //Worker.findByIdAndUpdate(
       id,
       {
         $push: {
@@ -166,8 +172,8 @@ server.put('/workers/:id', requireJWT, (req, res) => {
       },
       { new: true, runValidators: true, context: 'query' }
     )
-      .then(worker => {
-        res.status(201).json(worker)
+      .then(room => {
+        res.status(201).json(room)
       })
       .catch(error => {
         res.status(400).json({ error })
@@ -176,16 +182,17 @@ server.put('/workers/:id', requireJWT, (req, res) => {
 })
 
 // Delete a booking
-server.delete('/workers/:id/:bookingId', requireJWT, (req, res) => {
+server.delete('/rooms/:id/:bookingId', requireJWT, (req, res) => {
   const { id } = req.params
   const { bookingId } = req.params
-  Worker.findByIdAndUpdate(
+  Room.findByIdAndUpdate(
+  //Worker.findByIdAndUpdate(
     id,
     { $pull: { bookings: { _id: bookingId } } },
     { new: true }
   )
-    .then(worker => {
-      res.status(201).json(worker)
+    .then(room => {
+      res.status(201).json(room)
     })
     .catch(error => {
       res.status(400).json({ error })

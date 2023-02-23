@@ -28,41 +28,45 @@ var config = require('./config');
 
 var server = express();
 
-var workersRouter = require('./routes/workers');
+var roomsRouter = require('./routes/rooms');
 
-var authRouter = require('./routes/auth');
+var authRouter = require('./routes/auth'); //const Worker = require('./models/Room')
 
-var Worker = require('./models/Worker');
+
+var Room = require('./models/Room');
 
 var momentTimezone = require('moment-timezone');
 
-var moment = require('moment'); // Middleware
+var moment = require('moment');
 
+var HKTimeZone = 'Asia/Hong_Kong'; // Middleware
 
 server.use(bodyParser.json());
 server.use(cors({
   credentials: true
 }));
 server.use(authMiddleware.initialize); // Routes
-// server.use([require('./routes/auth'), require('./routes/workers')])
-// server.use('./routes/workers')
-// server.use('/workers', workersRouter)
+// server.use([require('./routes/auth'), require('./routes/rooms')])
+// server.use('./routes/rooms')
+// server.use('/rooms', roomsRouter)
 
 server.post('/auth', signIn, signJWTForUser);
 server.post('/auth/sign-up', signUp, signJWTForUser);
-server.use('/workers', workersRouter);
-server.get('/workers', requireJWT, function (req, res) {
-  Worker.find().then(function (workers) {
-    res.json(workers);
+server.use('/rooms', roomsRouter);
+server.get('/rooms', requireJWT, function (req, res) {
+  Room.find() //Worker.find()
+  .then(function (rooms) {
+    res.json(rooms);
   })["catch"](function (error) {
     res.json({
       error: error
     });
   });
 });
-server.post('/workers', requireJWT, function (req, res) {
-  Worker.create(req.body).then(function (worker) {
-    res.status(201).json(worker);
+server.post('/rooms', requireJWT, function (req, res) {
+  Room.create(req.body) //Worker.create(req.body)
+  .then(function (room) {
+    res.status(201).json(room);
   })["catch"](function (error) {
     res.status(400).json({
       error: error
@@ -71,7 +75,7 @@ server.post('/workers', requireJWT, function (req, res) {
 }); // Function to convert UTC JS Date object to a Moment.js object in AEST
 
 var dateAEST = function dateAEST(date) {
-  return momentTimezone(date).tz('Australia/Sydney');
+  return momentTimezone(date).tz(HKTimeZone);
 }; // Function to calculate the duration of the hours between the start and end of the booking
 
 
@@ -86,11 +90,12 @@ var durationHours = function durationHours(bookingStart, bookingEnd) {
 }; // Make a booking
 
 
-server.put('/workers/:id', requireJWT, function (req, res) {
+server.put('/rooms/:id', requireJWT, function (req, res) {
   var id = req.params.id; // If the recurring array is empty, the booking is not recurring
 
   if (req.body.recurring.length === 0) {
-    Worker.findByIdAndUpdate(id, {
+    Room.findByIdAndUpdate( //Worker.findByIdAndUpdate(
+    id, {
       $addToSet: {
         bookings: _objectSpread({
           user: req.user,
@@ -104,8 +109,8 @@ server.put('/workers/:id', requireJWT, function (req, res) {
       "new": true,
       runValidators: true,
       context: 'query'
-    }).then(function (worker) {
-      res.status(201).json(worker);
+    }).then(function (room) {
+      res.status(201).json(room);
     })["catch"](function (error) {
       res.status(400).json({
         error: error
@@ -120,9 +125,9 @@ server.put('/workers/:id', requireJWT, function (req, res) {
 
     var recurringBookings = [firstBooking]; // A Moment.js object to track each date in the recurring range, initialised with the first date
 
-    var bookingDateTracker = momentTimezone(firstBooking.bookingStart).tz('Australia/Sydney'); // A Moment.js date object for the final booking date in the recurring booking range - set to one hour ahead of the first booking - to calculate the number of days/weeks/months between the first and last bookings when rounded down
+    var bookingDateTracker = momentTimezone(firstBooking.bookingStart).tz(HKTimeZone); // A Moment.js date object for the final booking date in the recurring booking range - set to one hour ahead of the first booking - to calculate the number of days/weeks/months between the first and last bookings when rounded down
 
-    var lastBookingDate = momentTimezone(firstBooking.recurring[0]).tz('Australia/Sydney');
+    var lastBookingDate = momentTimezone(firstBooking.recurring[0]).tz(HKTimeZone);
     lastBookingDate.hour(bookingDateTracker.hour() + 1); // The number of subsequent bookings in the recurring booking date range
 
     var bookingsInRange = req.body.recurring[1] === 'daily' ? Math.floor(lastBookingDate.diff(bookingDateTracker, 'days', true)) : req.body.recurring[1] === 'weekly' ? Math.floor(lastBookingDate.diff(bookingDateTracker, 'weeks', true)) : Math.floor(lastBookingDate.diff(bookingDateTracker, 'months', true)); // Set the units which will be added to the bookingDateTracker - days, weeks or months
@@ -137,7 +142,7 @@ server.put('/workers/:id', requireJWT, function (req, res) {
         // Create a new booking object based on the first booking
         var newBooking = Object.assign({}, firstBooking); // Calculate the end date/time of the new booking by adding the number of units to the first booking's end date/time
 
-        var firstBookingEndDate = momentTimezone(firstBooking.bookingEnd).tz('Australia/Sydney');
+        var firstBookingEndDate = momentTimezone(firstBooking.bookingEnd).tz(HKTimeZone);
         var proposedBookingDateEnd = firstBookingEndDate.add(i + 1, units); // Update the new booking object's start and end dates
 
         newBooking.bookingStart = proposedBookingDateStart.toDate();
@@ -145,10 +150,11 @@ server.put('/workers/:id', requireJWT, function (req, res) {
 
         recurringBookings.push(newBooking);
       }
-    } // Find the relevant worker and save the bookings
+    } // Find the relevant room and save the bookings
 
 
-    Worker.findByIdAndUpdate(id, {
+    Room.findByIdAndUpdate( //Worker.findByIdAndUpdate(
+    id, {
       $push: {
         bookings: {
           $each: recurringBookings
@@ -158,8 +164,8 @@ server.put('/workers/:id', requireJWT, function (req, res) {
       "new": true,
       runValidators: true,
       context: 'query'
-    }).then(function (worker) {
-      res.status(201).json(worker);
+    }).then(function (room) {
+      res.status(201).json(room);
     })["catch"](function (error) {
       res.status(400).json({
         error: error
@@ -168,10 +174,11 @@ server.put('/workers/:id', requireJWT, function (req, res) {
   }
 }); // Delete a booking
 
-server["delete"]('/workers/:id/:bookingId', requireJWT, function (req, res) {
+server["delete"]('/rooms/:id/:bookingId', requireJWT, function (req, res) {
   var id = req.params.id;
   var bookingId = req.params.bookingId;
-  Worker.findByIdAndUpdate(id, {
+  Room.findByIdAndUpdate( //Worker.findByIdAndUpdate(
+  id, {
     $pull: {
       bookings: {
         _id: bookingId
@@ -179,8 +186,8 @@ server["delete"]('/workers/:id/:bookingId', requireJWT, function (req, res) {
     }
   }, {
     "new": true
-  }).then(function (worker) {
-    res.status(201).json(worker);
+  }).then(function (room) {
+    res.status(201).json(room);
   })["catch"](function (error) {
     res.status(400).json({
       error: error

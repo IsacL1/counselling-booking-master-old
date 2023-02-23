@@ -19,6 +19,7 @@ function FilterElement({
     <div className="sidebar__box--filter filter">
       <h3 className="header__heading header__heading--sidebar">Filter</h3>
       <form className="form form--filter">
+      {/*
         <h4 className="form__heading form__heading--filter">Level</h4>
         <div className="form__group" onChange={(event) => onSetFloorParam(event.target.value)}>
           <div className="form_group">
@@ -34,7 +35,29 @@ function FilterElement({
             <label for="all" className="form__label form__label--inline">All Levels</label>
           </div>
         </div>
+*/}
 
+      <h4 className="form__heading form__heading--filter">Cases</h4>
+        <div onChange={(event) => onToggleFeature(event.target.name)} >
+          <div className="form__group">
+            <input type="checkbox" id="famIsu" name="famIsu" className="form__input--checkbox" checked={filterParams[0].value} />
+            <label for="famIsu" className="form__label form__label--inline">Family Issue</label>
+          </div>
+          <div className="form_group">
+            <input type="checkbox" id="stdIsu" name="stdIsu" className="form__input--checkbox" checked={filterParams[1].value} />
+            <label for="stdIsu" className="form__label form__label--inline">Study Issue</label>
+          </div>
+          <div className="form_group">
+            <input type="checkbox" id="healIsu" name="healIsu" className="form__input--checkbox" checked={filterParams[2].value} />
+            <label for="healIsu" className="form__label form__label--inline">Health Issue</label>
+          </div>
+          <div className="form_group">
+            <input type="checkbox" id="relatIsu" name="relatIsu" className="form__input--checkbox" checked={filterParams[3].value} />
+            <label for="relatIsu" className="form__label form__label--inline">relationship Issue</label>
+          </div>
+        </div>
+
+{/*
         <h4 className="form__heading form__heading--filter">Features</h4>
         <div onChange={(event) => onToggleFeature(event.target.name)} >
           <div className="form__group">
@@ -58,6 +81,9 @@ function FilterElement({
             <label for="projector" className="form__label form__label--inline">Projector</label>
           </div>
         </div>
+*/}
+
+        {/*
         <h4 className="form__heading form__heading--filter">Capacity</h4>
         <div onChange={ (event) => onToggleCapacity(event.target.id)}>
           <div className="form_group">
@@ -81,6 +107,9 @@ function FilterElement({
             <label for="40seats" className="form__label form__label--inline">40 Seats</label>
           </div>
         </div>
+        */}
+
+        {/*
         <h4 className="form__heading form__heading--filter">Availability</h4>
           <div onChange={(event) => onSetAvailabilityParam(event.target.value)} >
             <div className="form_group">
@@ -96,6 +125,7 @@ function FilterElement({
               <label for="fullyBooked" className="form__label form__label--inline">Fully Booked</label>
             </div>
           </div>
+      */}
       </form>
     </div>
   )

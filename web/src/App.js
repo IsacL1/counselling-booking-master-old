@@ -10,25 +10,25 @@ import Footer from './components/Footer'
 import Key from './components/Key'
 import MyBookings from './components/MyBookings'
 import NavBar from './components/NavBar'
-import WorkersList from './components/WorkersList'
+import RoomsList from './components/RoomsList'
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 
-//import Chatworker from "./chatWorker/App"
+//import Chatroom from "./chatRoom/App"
 
 import { signIn, signOut, signUp } from './api/auth'
-import { listWorkers } from './api/workers'
+import { listRooms } from './api/rooms'
 import { getDecodedToken } from './api/token'
-import { makeBooking, deleteBooking, updateStateWorker } from './api/booking'
+import { makeBooking, deleteBooking, updateStateRoom } from './api/booking'
 import Calendar from './components/Calendar'
 import BookingModal from './components/BookingModal'
 import { floorParams, filterParams, capacityParams, onFilterByFloor, onFilterByFeature, onFilterByCapacity, onFilterByAvailablity } from './helpers/filters'
-import { initialWorker } from './helpers/workers'
+import { initialRoom } from './helpers/rooms'
 
 class App extends Component {
   state = {
     decodedToken: getDecodedToken(), // retrieves the token from local storage if valid, else will be null
-    workerData: null,
+    roomData: null,
     userBookings: null,
     calendarDate: new Date(),
     selectedBooking: null,
@@ -38,7 +38,7 @@ class App extends Component {
     availabilityParam: null,
     filteredData: null,
     checked: null,
-    currentWorker: null,
+    currentRoom: null,
     error: null,
     disableRecurring: true
   }
@@ -78,20 +78,29 @@ class App extends Component {
   }
 
   // Makes a booking by updating the database and the React state
-  onMakeBooking = ({ startDate, endDate, businessUnit, purpose, workerId, recurringData }) => {
-    const bookingData = { startDate, endDate, businessUnit, purpose, workerId }
-    const existingBookings = this.state.currentWorker.bookings
+  onMakeBooking = ({ startDate, endDate, issue, emergencyLv, roomId }) => {
+    const bookingData = { startDate, endDate, issue, emergencyLv, roomId }
+    const existingBookings = this.state.currentRoom.bookings
+  /*
+  onMakeBooking = ({ startDate, endDate, businessUnit, purpose, roomId, recurringData }) => {
+    const bookingData = { startDate, endDate, businessUnit, purpose, roomId }
+    const existingBookings = this.state.currentRoom.bookings
+    */
 
     // Check if there is a clash and, if not, save the new booking to the database
     try {
       makeBooking(
-        { startDate, endDate, businessUnit, purpose, workerId, recurringData },
+        { startDate, endDate, issue, emergencyLv, roomId },
         existingBookings
       )
-        .then(updatedWorker => {
+      /*makeBooking(
+        { startDate, endDate, businessUnit, purpose, roomId, recurringData },
+        existingBookings
+      )*/
+        .then(updatedRoom => {
           // If the new booking is successfully saved to the database
-          alert(`${updatedWorker.name} successfully booked.`)
-          updateStateWorker(this, updatedWorker, this.loadMyBookings)
+          alert(`${updatedRoom.name} successfully booked.`)
+          updateStateRoom(this, updatedRoom, this.loadMyBookings)
         })
     } catch (err) {
       // If there is a booking clash and the booking could not be saved
@@ -103,22 +112,22 @@ class App extends Component {
   }
 
   // Deletes a booking from the database and updates the React state
-  onDeleteBooking = (workerId, bookingId) => {
-    deleteBooking(workerId, bookingId)
-      .then(updatedWorker => {
+  onDeleteBooking = (roomId, bookingId) => {
+    deleteBooking(roomId, bookingId)
+      .then(updatedRoom => {
         alert('Booking successfully deleted')
-        updateStateWorker(
+        updateStateRoom(
           this,
-          updatedWorker,
+          updatedRoom,
           this.loadMyBookings,
         )
       })
       .catch(error => console.error(error.message))
   }
 
-  setWorker = id => {
-    const worker = this.state.workerData.find(worker => worker._id === id)
-    this.setState({ currentWorker: worker })
+  setRoom = id => {
+    const room = this.state.roomData.find(room => room._id === id)
+    this.setState({ currentRoom: room })
   }
 
   // setting the feature filter parameters
@@ -164,17 +173,17 @@ class App extends Component {
     this.setState({ availabilityParam: availability })
   }
 
-  // get today's bookings for all workers
+  // get today's bookings for all rooms
   oneSetCurrentDateBookings = () => {
     const currentDate = moment().format('DD-MM-YYYY')
-    // const workerData = this.state.workerData
-    const workerData = this.state.workerData
+    // const roomData = this.state.roomData
+    const roomData = this.state.roomData
     // array to collect todays bookings
     let todaysBookings = []
-    // loop through all workers
-    workerData.forEach(worker => {
-      // loop through all bookings for that worker
-      worker.bookings.forEach(booking => {
+    // loop through all rooms
+    roomData.forEach(room => {
+      // loop through all bookings for that room
+      room.bookings.forEach(booking => {
         const bookingStart = moment(booking.bookingStart).format('DD-MM-YYYY')
         if (bookingStart === currentDate) {
           todaysBookings.push(booking)
@@ -188,13 +197,13 @@ class App extends Component {
   loadMyBookings = () => {
     let myBookings = []
     const userId = this.state.decodedToken.sub
-    // Loop through all the workers
-    this.state.workerData.forEach(worker => {
-      // Loop through all the bookings in 'worker'
-      worker.bookings.forEach(booking => {
+    // Loop through all the rooms
+    this.state.roomData.forEach(room => {
+      // Loop through all the bookings in 'room'
+      room.bookings.forEach(booking => {
         if (booking.user === userId) {
           // Push all bookings where the current userId is equal to the booking's userId into myBookings
-          booking.workerId = worker._id
+          booking.roomId = room._id
           myBookings.push(booking)
         }
       })
@@ -203,12 +212,12 @@ class App extends Component {
   }
 
   render() {
-    const webName = "Online Counselling System"
+    const webName = "Online Counselling Booking System"
     const {
       decodedToken,
-      currentWorker,
+      currentRoom,
       userBookings,
-      workerData,
+      roomData,
       calendarDate,
       selectedBooking,
       filterParams,
@@ -229,9 +238,9 @@ class App extends Component {
     const featureParams = this.state.filterParams
     const date = this.state.currentDate
 
-    if (!!workerData) {
-      // Send all worker data and the selected floor, return filtered floors and store in filteredData
-      filteredData = onFilterByFloor(floorParam, workerData)
+    if (!!roomData) {
+      // Send all room data and the selected floor, return filtered floors and store in filteredData
+      filteredData = onFilterByFloor(floorParam, roomData)
       // Send the previously filtered data along with the feature params
       filteredData = onFilterByFeature(featureParams, filteredData)
       // Send the previously filtered data along with the capacity params
@@ -263,12 +272,12 @@ class App extends Component {
 
                 <Route path="/bookings" exact render={requireAuth(() => (
                   <Fragment>
-                    { !!decodedToken && !workerData && loading && (
+                    { !!decodedToken && !roomData && loading && (
                       <div className="loading_animation">
                         <Loading />
                       </div>
                     ) }
-                    {!!decodedToken && !!workerData && !loading && (
+                    {!!decodedToken && !!roomData && !loading && (
                       <div className="wrapper">
                         <div className="header header__nav header--flex">
                           <h1 className="header__heading header__heading--main">{ webName }</h1>
@@ -290,7 +299,7 @@ class App extends Component {
                               <FilterElement
                                 onSetFloorParam={this.onSetFloorParam}
                                 onToggleFeature={this.onToggleFeature}
-                                onToggleCapacity={this.onToggleCapacity}
+                                // onToggleCapacity={this.onToggleCapacity}
                                 onSetAvailabilityParam={
                                   this.onSetAvailabilityParam
                                 }
@@ -307,12 +316,12 @@ class App extends Component {
                             </div>
                           </div>
                           <div className="content">
-                            <WorkersList
-                              workers={filteredData}
-                              onWorkerSelect={this.onWorkerSelect}
+                            <RoomsList
+                              rooms={filteredData}
+                              onRoomSelect={this.onRoomSelect}
                               onShowBooking={this.onShowBooking}
                               date={calendarDate}
-                              onSetWorker={this.setWorker}
+                              onSetRoom={this.setRoom}
                             />
                           </div>
                          </div>
@@ -320,7 +329,7 @@ class App extends Component {
                           selectedBooking={selectedBooking}
                           onCloseBooking={this.onCloseBooking}
                           onDeleteBooking={onDeleteBooking}
-                          workerData={workerData}
+                          roomData={roomData}
                           user={decodedToken.email}
                         />
                       </div>
@@ -332,8 +341,8 @@ class App extends Component {
                   () => (
                     <Fragment>
                       {!!decodedToken &&
-                        !!workerData &&
-                        !!currentWorker && (
+                        !!roomData &&
+                        !!currentRoom && (
                           <div className="wrapper">
                             <header className="header header__nav header--flex">
                               <h1 className="header__heading header__heading--main">{ webName }</h1>
@@ -346,7 +355,7 @@ class App extends Component {
                             <div className="wrapper__content">
                               <BookingForm
                                 user={decodedToken.email}
-                                workerData={currentWorker}
+                                roomData={currentRoom}
                                 onMakeBooking={this.onMakeBooking}
                                 date={calendarDate}
                                 disableRecurring={disableRecurring}
@@ -359,7 +368,7 @@ class App extends Component {
                                 selectedBooking={selectedBooking}
                                 onCloseBooking={this.onCloseBooking}
                                 onDeleteBooking={onDeleteBooking}
-                                workerData={workerData}
+                                roomData={roomData}
                                 user={decodedToken.email}
                               />
                         </div>
@@ -371,7 +380,7 @@ class App extends Component {
                 <Route path="/mybookings" exact render={requireAuth(() => (
                     <Fragment>
                       {!!decodedToken &&
-                        !!workerData && (
+                        !!roomData && (
                           <div className="wrapper">
                             <div className="header header__nav header--flex">
                               <h1 className="header__heading header__heading--main">{ webName }</h1>
@@ -386,7 +395,7 @@ class App extends Component {
                                 <h2 className="header__heading header__heading--sub">My Bookings</h2>
                               </div>
                               <MyBookings
-                                workerData={workerData}
+                                roomData={roomData}
                                 user={decodedToken.email}
                                 userBookings={userBookings}
                                 onDeleteBooking={onDeleteBooking}
@@ -397,7 +406,7 @@ class App extends Component {
                     </Fragment>
                   ))} />
 
-                <Route path="/chatWorker" 
+                <Route path="/chatRoom" 
                   
                 />
                 <Route render={({ location }) => <h2>
@@ -418,20 +427,20 @@ class App extends Component {
     if (signedIn) {
       // display loading page
       this.setState({ loading: true })
-      // load all of the workers from the database
-      listWorkers()
-        .then(workers => {
-          this.setState({ workerData: workers })
+      // load all of the rooms from the database
+      listRooms()
+        .then(rooms => {
+          this.setState({ roomData: rooms })
           // load the current user's bookings
           this.loadMyBookings()
-          // the state's current worker defaults to first worker
-          const worker = this.state.workerData[0]
-          this.setWorker(worker._id)
+          // the state's current room defaults to first room
+          const room = this.state.roomData[0]
+          this.setRoom(room._id)
           // toggle loading page off
           this.setState({ loading: false })
         })
         .catch(error => {
-          console.error('Error loading worker data', error)
+          console.error('Error loading room data', error)
           this.setState({ error })
         })
     }

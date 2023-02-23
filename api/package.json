@@ -1,7 +1,7 @@
 {
-  "name": "worker-booking-system",
+  "name": "room-booking-system",
   "version": "1.0.0",
-  "description": "Application for booking worker",
+  "description": "Application for booking room",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
@@ -40,6 +40,6 @@
     "seed": "node models/seed.js",
     "start": "node server.js",
     "deploy": "now -E production.env",
-    "rmdeploy": "now rm worker-booking-system"
+    "rmdeploy": "now rm room-booking-system"
   }
 }
