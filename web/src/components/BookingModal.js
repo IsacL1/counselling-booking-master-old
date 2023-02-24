@@ -41,10 +41,10 @@ const BookingModal = props => {
             <p className="modal__paragraph">{`${momentTimezone.tz(props.selectedBooking['bookingStart'], HKTimeZone).format('MMMM Do, YYYY')} to ${momentTimezone.tz(props.selectedBooking['bookingEnd'], HKTimeZone).format('MMMM Do, YYYY')}`}
           </p>
           </p>
-          <p className="modal__paragraph"><strong>Emergency Level</strong>{props.selectedBooking['emergencyLv']}</p>
-          {/*<p className="modal__paragraph"><strong>Business Unit </strong>{props.selectedBooking['businessUnit']}</p>*/}
-          <p className="modal__paragraph"><strong>Issue</strong>{props.selectedBooking['issue']}</p>
-          {/*<p className="modal__paragraph"><strong>Purpose </strong>{props.selectedBooking['purpose']}</p>*/}
+          {/*<p className="modal__paragraph"><strong>Emergency Level</strong>{props.selectedBooking['emergencyLv']}</p>*/}
+          <p className="modal__paragraph"><strong>Business Unit </strong>{props.selectedBooking['businessUnit']}</p>
+          {/*<p className="modal__paragraph"><strong>Issue</strong>{props.selectedBooking['issue']}</p>*/}
+          <p className="modal__paragraph"><strong>Purpose </strong>{props.selectedBooking['purpose']}</p>
           <p className="modal__paragraph"><strong>Description</strong>{props.selectedBooking['description']}</p>
         </div>
       )}

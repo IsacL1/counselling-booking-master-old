@@ -13,7 +13,7 @@ const config = require('./config')
 const server = express()
 const roomsRouter = require('./routes/rooms')
 const authRouter = require('./routes/auth')
-//const Worker = require('./models/Room')
+// const Room = require('./models/Room')
 const Room = require('./models/Room')
 const momentTimezone = require('moment-timezone')
 const moment = require('moment')
@@ -35,7 +35,7 @@ server.use('/rooms', roomsRouter)
 
 server.get('/rooms', requireJWT, (req, res) => {
   Room.find()
-  //Worker.find()
+  //Room.find()
     .then(rooms => {
       res.json(rooms)
     })
@@ -46,7 +46,7 @@ server.get('/rooms', requireJWT, (req, res) => {
 
 server.post('/rooms', requireJWT, (req, res) => {
   Room.create(req.body)
-  //Worker.create(req.body)
+  //Room.create(req.body)
     .then(room => {
       res.status(201).json(room)
     })
@@ -78,7 +78,7 @@ server.put('/rooms/:id', requireJWT, (req, res) => {
   // If the recurring array is empty, the booking is not recurring
   if (req.body.recurring.length === 0) {
     Room.findByIdAndUpdate(
-    //Worker.findByIdAndUpdate(
+    //Room.findByIdAndUpdate(
       id,
       {
         $addToSet: {
@@ -160,7 +160,7 @@ server.put('/rooms/:id', requireJWT, (req, res) => {
 
     // Find the relevant room and save the bookings
     Room.findByIdAndUpdate(
-    //Worker.findByIdAndUpdate(
+    //Room.findByIdAndUpdate(
       id,
       {
         $push: {
@@ -186,7 +186,7 @@ server.delete('/rooms/:id/:bookingId', requireJWT, (req, res) => {
   const { id } = req.params
   const { bookingId } = req.params
   Room.findByIdAndUpdate(
-  //Worker.findByIdAndUpdate(
+  //Room.findByIdAndUpdate(
     id,
     { $pull: { bookings: { _id: bookingId } } },
     { new: true }

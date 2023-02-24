@@ -2,11 +2,13 @@ const express = require('express')
 const router = new express.Router()
 const moment = require('moment')
 const momentTimezone = require('moment-timezone')
+// const Room = require('../models/Room')
 const Room = require('../models/Room')
 const { requireJWT } = require('../middleware/auth')
 const HKTimeZone = 'Asia/Hong_Kong'
 
 router.get('/rooms', requireJWT, (req, res) => {
+  // Room.find()
   Room.find()
     .then(rooms => {
       res.json(rooms)
@@ -17,6 +19,7 @@ router.get('/rooms', requireJWT, (req, res) => {
 })
 
 router.post('/rooms', requireJWT, (req, res) => {
+  // Room.create(req.body)
   Room.create(req.body)
     .then(room => {
       res.status(201).json(room)
@@ -48,7 +51,8 @@ router.put('/rooms/:id', requireJWT, (req, res) => {
 
   // If the recurring array is empty, the booking is not recurring
   if (req.body.recurring.length === 0) {
-    Room.findByIdAndUpdate(
+    // Room.findByIdAndUpdate(
+      Room.findByIdAndUpdate(
       id,
       {
         $addToSet: {
@@ -129,6 +133,7 @@ router.put('/rooms/:id', requireJWT, (req, res) => {
     
 
     // Find the relevant room and save the bookings
+    // Room.findByIdAndUpdate(
     Room.findByIdAndUpdate(
       id,
       {
@@ -154,6 +159,7 @@ router.put('/rooms/:id', requireJWT, (req, res) => {
 router.delete('/rooms/:id/:bookingId', requireJWT, (req, res) => {
   const { id } = req.params
   const { bookingId } = req.params
+  // Room.findByIdAndUpdate(
   Room.findByIdAndUpdate(
     id,
     { $pull: { bookings: { _id: bookingId } } },

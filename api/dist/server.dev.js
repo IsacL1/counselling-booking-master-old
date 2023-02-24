@@ -30,7 +30,7 @@ var server = express();
 
 var roomsRouter = require('./routes/rooms');
 
-var authRouter = require('./routes/auth'); //const Worker = require('./models/Room')
+var authRouter = require('./routes/auth'); // const Room = require('./models/Room')
 
 
 var Room = require('./models/Room');
@@ -54,7 +54,7 @@ server.post('/auth', signIn, signJWTForUser);
 server.post('/auth/sign-up', signUp, signJWTForUser);
 server.use('/rooms', roomsRouter);
 server.get('/rooms', requireJWT, function (req, res) {
-  Room.find() //Worker.find()
+  Room.find() //Room.find()
   .then(function (rooms) {
     res.json(rooms);
   })["catch"](function (error) {
@@ -64,7 +64,7 @@ server.get('/rooms', requireJWT, function (req, res) {
   });
 });
 server.post('/rooms', requireJWT, function (req, res) {
-  Room.create(req.body) //Worker.create(req.body)
+  Room.create(req.body) //Room.create(req.body)
   .then(function (room) {
     res.status(201).json(room);
   })["catch"](function (error) {
@@ -94,7 +94,7 @@ server.put('/rooms/:id', requireJWT, function (req, res) {
   var id = req.params.id; // If the recurring array is empty, the booking is not recurring
 
   if (req.body.recurring.length === 0) {
-    Room.findByIdAndUpdate( //Worker.findByIdAndUpdate(
+    Room.findByIdAndUpdate( //Room.findByIdAndUpdate(
     id, {
       $addToSet: {
         bookings: _objectSpread({
@@ -153,7 +153,7 @@ server.put('/rooms/:id', requireJWT, function (req, res) {
     } // Find the relevant room and save the bookings
 
 
-    Room.findByIdAndUpdate( //Worker.findByIdAndUpdate(
+    Room.findByIdAndUpdate( //Room.findByIdAndUpdate(
     id, {
       $push: {
         bookings: {
@@ -177,7 +177,7 @@ server.put('/rooms/:id', requireJWT, function (req, res) {
 server["delete"]('/rooms/:id/:bookingId', requireJWT, function (req, res) {
   var id = req.params.id;
   var bookingId = req.params.bookingId;
-  Room.findByIdAndUpdate( //Worker.findByIdAndUpdate(
+  Room.findByIdAndUpdate( //Room.findByIdAndUpdate(
   id, {
     $pull: {
       bookings: {

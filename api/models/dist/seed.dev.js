@@ -1,10 +1,17 @@
 "use strict";
 
-var Room = require('./Room');
+// const Room = require('./Room')
+var Room = require('./Room'); // Room.create([
+
 
 Room.create([// Level 8
 {
-  name: 'Worker 1',
+  name: 'Eric (Room 1)',
+  floor: '801',
+  capacity: 1
+}, {
+  name: 'Mary (Room 2)',
+  floor: '801',
   capacity: 1
 }]).then(function (rooms) {
   console.log("Created ".concat(rooms.length, " rooms."));

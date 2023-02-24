@@ -40,7 +40,7 @@ class App extends Component {
     checked: null,
     currentRoom: null,
     error: null,
-    disableRecurring: true
+    //disableRecurring: true
   }
 
   // Pass supplied first name, lastname, email & password to the signUp function, returns the user's token
@@ -155,6 +155,7 @@ class App extends Component {
   }
 
   // changing the boolean value for the display attribute for the recurring date input
+  /*
   onToggleRecurring = (value) => {
     let disableRecurring
     if (value === 'none') {
@@ -164,10 +165,11 @@ class App extends Component {
     }
     this.setState({disableRecurring: disableRecurring})
   }
+  */
 
   onSetFloorParam = value => {
 		this.setState({ floorParam: value })
-  }
+  }  
 
   onSetAvailabilityParam = availability => {
     this.setState({ availabilityParam: availability })
@@ -224,7 +226,7 @@ class App extends Component {
       capacityParams,
       floorParam,
       availabilityParam,
-      disableRecurring,
+      //disableRecurring,
       loading
     } = this.state
     const signedIn = !!decodedToken
@@ -297,9 +299,9 @@ class App extends Component {
                             </div>
                             <div className="sidebar__box">
                               <FilterElement
-                                onSetFloorParam={this.onSetFloorParam}
-                                onToggleFeature={this.onToggleFeature}
-                                // onToggleCapacity={this.onToggleCapacity}
+                                onSetFloorParam={this.onSetFloorParam}  // classroom
+                                onToggleFeature={this.onToggleFeature} // Case
+                                onToggleCapacity={this.onToggleCapacity}  // worker & student 1:1
                                 onSetAvailabilityParam={
                                   this.onSetAvailabilityParam
                                 }
@@ -358,10 +360,10 @@ class App extends Component {
                                 roomData={currentRoom}
                                 onMakeBooking={this.onMakeBooking}
                                 date={calendarDate}
-                                disableRecurring={disableRecurring}
+                                //disableRecurring={disableRecurring}
                                 updateCalendar={setCalendarDate}
                                 onShowBooking={this.onShowBooking}
-                                onToggleRecurring={this.onToggleRecurring}
+                                //onToggleRecurring={this.onToggleRecurring}
                               />
                             </div>
                               <BookingModal

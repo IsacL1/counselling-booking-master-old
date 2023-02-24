@@ -109,7 +109,7 @@ function FilterElement({
         </div>
         */}
 
-        {/*
+        
         <h4 className="form__heading form__heading--filter">Availability</h4>
           <div onChange={(event) => onSetAvailabilityParam(event.target.value)} >
             <div className="form_group">
@@ -125,7 +125,7 @@ function FilterElement({
               <label for="fullyBooked" className="form__label form__label--inline">Fully Booked</label>
             </div>
           </div>
-      */}
+      
       </form>
     </div>
   )

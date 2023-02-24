@@ -118,5 +118,6 @@ var roomSchema = new Schema({
   },
   */
   bookings: [bookingSchema]
-});
+}); // const Room = (module.exports = mongoose.model('Room', roomSchema))
+
 var Room = module.exports = mongoose.model('Room', roomSchema);

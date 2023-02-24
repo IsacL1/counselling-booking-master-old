@@ -13,6 +13,7 @@ const bookingSchema = new Schema({
   emergencyLv: { type: String, required: true },
   roomId: { type: Schema.ObjectId, ref: 'Room' }
 })
+
 /*
 const bookingSchema = new Schema({
   _bookingId: Schema.Types.ObjectId,
@@ -105,4 +106,5 @@ const roomSchema = new Schema({
   bookings: [bookingSchema]
 })
 
+// const Room = (module.exports = mongoose.model('Room', roomSchema))
 const Room = (module.exports = mongoose.model('Room', roomSchema))

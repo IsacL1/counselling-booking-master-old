@@ -9,6 +9,7 @@ const RoomsList = props => (
       Appointment 
       </th>
     </tr>
+
     <tr className="table__row table__row--subheader">
       <th scope="col" className="table__cell--header table__cell--align-left">
         Worker

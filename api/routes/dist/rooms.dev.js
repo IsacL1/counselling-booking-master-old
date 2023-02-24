@@ -12,7 +12,8 @@ var router = new express.Router();
 
 var moment = require('moment');
 
-var momentTimezone = require('moment-timezone');
+var momentTimezone = require('moment-timezone'); // const Room = require('../models/Room')
+
 
 var Room = require('../models/Room');
 
@@ -21,6 +22,7 @@ var _require = require('../middleware/auth'),
 
 var HKTimeZone = 'Asia/Hong_Kong';
 router.get('/rooms', requireJWT, function (req, res) {
+  // Room.find()
   Room.find().then(function (rooms) {
     res.json(rooms);
   })["catch"](function (error) {
@@ -30,6 +32,7 @@ router.get('/rooms', requireJWT, function (req, res) {
   });
 });
 router.post('/rooms', requireJWT, function (req, res) {
+  // Room.create(req.body)
   Room.create(req.body).then(function (room) {
     res.status(201).json(room);
   })["catch"](function (error) {
@@ -59,6 +62,7 @@ router.put('/rooms/:id', requireJWT, function (req, res) {
   var id = req.params.id; // If the recurring array is empty, the booking is not recurring
 
   if (req.body.recurring.length === 0) {
+    // Room.findByIdAndUpdate(
     Room.findByIdAndUpdate(id, {
       $addToSet: {
         bookings: _objectSpread({
@@ -115,6 +119,7 @@ router.put('/rooms/:id', requireJWT, function (req, res) {
         recurringBookings.push(newBooking);
       }
     } // Find the relevant room and save the bookings
+    // Room.findByIdAndUpdate(
 
 
     Room.findByIdAndUpdate(id, {
@@ -139,7 +144,8 @@ router.put('/rooms/:id', requireJWT, function (req, res) {
 
 router["delete"]('/rooms/:id/:bookingId', requireJWT, function (req, res) {
   var id = req.params.id;
-  var bookingId = req.params.bookingId;
+  var bookingId = req.params.bookingId; // Room.findByIdAndUpdate(
+
   Room.findByIdAndUpdate(id, {
     $pull: {
       bookings: {
