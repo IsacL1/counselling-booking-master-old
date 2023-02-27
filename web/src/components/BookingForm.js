@@ -159,7 +159,7 @@ function BookingForm({ onMakeBooking, user, roomData, date, updateCalendar, onSh
           <div className="form__group">
             <label className="form__label form__label--booking">
               {'Issue'}
-              <select name="issue" className="form__input form__input--select">
+              <select name="issue" defaultValue={"famIsu"} className="form__input form__input--select">
                 <option value="famIsu">Family Issue</option>
                 <option value="styIsu">Study Issue</option>
                 <option value="healIsu">health Issue</option>
