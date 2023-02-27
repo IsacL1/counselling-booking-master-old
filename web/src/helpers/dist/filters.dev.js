@@ -23,7 +23,7 @@ var filterParams = [{
   name: 'famIsu',
   value: false
 }, {
-  name: 'stuIsu',
+  name: 'styIsu',
   value: false
 }, {
   name: 'healIsu',

@@ -7,7 +7,7 @@ import { formatTime, timeSelectOptions} from '../helpers/bookingForm'
 // initial issue filter parameters
 export const filterParams = [ 
   {name: 'famIsu', value: false},
-  {name: 'stuIsu', value: false},
+  {name: 'styIsu', value: false},
   {name: 'healIsu', value: false},
   {name: 'relatIsu', value: false}]
 /*
