@@ -7,7 +7,7 @@ import moment from 'moment'
 const formatAssetName = asset => {
   if (asset === 'famIsu') {
     return 'Family Issue'
-  } else if (asset === 'stdIsu') {
+  } else if (asset === 'styIsu') {
     return 'Study Issue'
   } else if (asset === 'healIsu') {
     return 'health Issue'

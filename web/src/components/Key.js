@@ -2,34 +2,32 @@ import React from 'react'
 
 const Key = props => (
   <div className="sidebar__box--key key">
-    <h3 className="header__heading header__heading--sidebar">Emergency Level</h3>
-    <div className="key__group">
-      <span className="key__square key__square--bu1"></span>
-      <p className="key__description">High</p>
-    </div>
-    <div className="key__group">
-      <span className="key__square key__square--bu2"></span>
-      <p className="key__description">Medium</p>
-    </div>
-    <div className="key__group">
-      <span className="key__square key__square--bu3"></span>
-      <p className="key__description">Low</p>
-    </div>
-    <div className="key__group">
-      <span className="key__square key__square--bu4"></span>
-      <p className="key__description">Do not know</p>
-    </div>
     
-    {/*
+    <h3 className="header__heading header__heading--sidebar">Form</h3>
     <div className="key__group">
-      <span className="key__square key__square--bu4"></span>
-      <p className="key__description">Business Unit 4</p>
+      <span className="key__square key__square--form1"></span>
+      <p className="key__description">Form 1</p>
     </div>
     <div className="key__group">
-      <span className="key__square key__square--bu5"></span>
-      <p className="key__description">Business Unit 5</p>
+      <span className="key__square key__square--form2"></span>
+      <p className="key__description">Form 2</p>
     </div>
-    */}
+    <div className="key__group">
+      <span className="key__square key__square--form3"></span>
+      <p className="key__description">Form 3</p>
+    </div>
+    <div className="key__group">
+      <span className="key__square key__square--form4"></span>
+      <p className="key__description">Form 4</p>
+    </div>
+    <div className="key__group">
+      <span className="key__square key__square--form5"></span>
+      <p className="key__description">Form 5</p>
+    </div>
+    <div className="key__group">
+      <span className="key__square key__square--form6"></span>
+      <p className="key__description">Form 6</p>
+    </div>
   </div>
 )
 

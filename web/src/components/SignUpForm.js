@@ -21,9 +21,10 @@ function SignUpForm({ onSignUp }) {
           <label>Last Name</label>
           <input type="text" name="lastName" className="form__input" />
 
-          <label>Display Name</label>
+          {/*<label>Display Name</label>
           <input type="text" name="displayName" className="form__input" />
-
+    */}
+    
           <label>Email</label>
           <input type="email" name="email" className="form__input" required />
 

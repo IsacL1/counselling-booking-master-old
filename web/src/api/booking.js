@@ -50,12 +50,11 @@ export function makeBooking(data, existingBookings) {
     return api.put(`/rooms/${data.roomId}`, {
       bookingStart: bookingStart,
       bookingEnd: bookingEnd,
+      businessUnit: data.businessUnit,
       issue: data.issue,
-      emergencyLv: data.emergencyLv,
-      //businessUnit: data.businessUnit,
       //purpose: data.purpose,
       roomId: data.roomId,
-      //recurring: data.recurringData
+      recurring: data.recurringData
     })
       .then(res => res.data)
       .catch(err => alert(err.response.data.error.message.match(/error:.+/i)[0]))

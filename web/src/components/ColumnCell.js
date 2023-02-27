@@ -37,26 +37,26 @@ const ColumnCell = props => {
       <tbody>
       <tr className="table__row--no-border table__row--border-bottom">
           <td
-        //onClick={() => props.onShowBooking(firstBookingData)} className={`table__cell--${firstBookingData.businessUnit
-        onClick={() => props.onShowBooking(firstBookingData)} className={`table__cell--${firstBookingData.emergencyLv
+        onClick={() => props.onShowBooking(firstBookingData)} className={`table__cell--${firstBookingData.businessUnit
+        //onClick={() => props.onShowBooking(firstBookingData)} className={`table__cell--${firstBookingData.emergencyLv
             .replace(/ /g, '-')
             .toLowerCase()} table__cell--subcell`
             }
           >
-            {firstBookingData.emergencyLv}
-            {/* {firstBookingData.businessUnit}*/}
+            {/*{firstBookingData.emergencyLv}*/}
+            {firstBookingData.businessUnit}
           </td>
         </tr>
         <tr className="table__row--no-border">
           <td
-        //onClick={() => props.onShowBooking(secondBookingData)} className={`table__cell--${secondBookingData.businessUnit
-        onClick={() => props.onShowBooking(secondBookingData)} className={`table__cell--${secondBookingData.emergencyLv
+        onClick={() => props.onShowBooking(secondBookingData)} className={`table__cell--${secondBookingData.businessUnit
+        //onClick={() => props.onShowBooking(secondBookingData)} className={`table__cell--${secondBookingData.emergencyLv
             .replace(/ /g, '-')
             .toLowerCase()} table__cell--subcell`
             }
           >
-            { secondBookingData.emergencyLv }
-           {/* {secondBookingData.businessUnit}*/}
+           {/*{ secondBookingData.emergencyLv }*/}
+           {secondBookingData.businessUnit}
           </td>
         </tr>
       </tbody>
@@ -69,14 +69,14 @@ const ColumnCell = props => {
           <tbody>
           <tr className="table__row--no-border table__row--border-bottom">
               <td
-            //onClick={() => props.onShowBooking(bookingData)} className={`table__cell--${bookingData.businessUnit
-            onClick={() => props.onShowBooking(bookingData)} className={`table__cell--${bookingData.emergencyLv
+            onClick={() => props.onShowBooking(bookingData)} className={`table__cell--${bookingData.businessUnit
+            //onClick={() => props.onShowBooking(bookingData)} className={`table__cell--${bookingData.emergencyLv
                 .replace(/ /g, '-')
                 .toLowerCase()} table__cell--subcell`
                 }
               >
-                { bookingData.emergencyLv }
-                {/*{bookingData.businessUnit}*/}
+                {/*{ bookingData.emergencyLv }*/}
+                {bookingData.businessUnit}
               </td>
             </tr>
             <tr className="table__row--no-border">
@@ -95,14 +95,14 @@ const ColumnCell = props => {
             </tr>
             <tr className="table__row--no-border">
           <td 
-          //onClick={() => props.onShowBooking(bookingData)} className={`table__cell--${bookingData.businessUnit
-          onClick={() => props.onShowBooking(bookingData)} className={`table__cell--${bookingData.emergencyLv
+          onClick={() => props.onShowBooking(bookingData)} className={`table__cell--${bookingData.businessUnit
+          //onClick={() => props.onShowBooking(bookingData)} className={`table__cell--${bookingData.emergencyLv
                   .replace(/ /g, '-')
                   .toLowerCase()} table__cell--subcell`
                 }
               >
-                { bookingData.emergencyLv }
-                {/*{bookingData.businessUnit}*/}
+                {/*{ bookingData.emergencyLv }*/}
+                {bookingData.businessUnit}
               </td>
             </tr>
           </tbody>
@@ -113,13 +113,13 @@ const ColumnCell = props => {
     columnData =
       <td
         onClick={() => props.onShowBooking(bookingData)}
-      //className={`table__cell--${bookingData.businessUnit
-      className={`table__cell--${bookingData.emergencyLv
+      className={`table__cell--${bookingData.businessUnit
+      //className={`table__cell--${bookingData.emergencyLv
         .replace(/ /g, '-')
           .toLowerCase()}`
         }>
-          { bookingData.emergencyLv }
-          {/*{bookingData.businessUnit}*/}
+          {/*{ bookingData.emergencyLv }*/}
+          {bookingData.businessUnit}
       </td>
   }
   return columnData

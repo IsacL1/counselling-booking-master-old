@@ -3,7 +3,8 @@ const JWT = require('jsonwebtoken')
 const PassportJWT = require('passport-jwt')
 const User = require('../models/User')
 
-const jwtSecret ='-----BEGIN RSA PRIVATE KEY-----\n' +
+const jwtSecret =
+  '-----BEGIN RSA PRIVATE KEY-----\n' +
   'MIIEoQIBAAKCAQBt9xngkDP5mMnt87ACGVCGGHBUVdCEEaHPboFMPU5cfkLtmLrR\n' +
   'vWc8vOJ2JQc8l42i7rg0bjAjSwruougF+Li7gwrm+AVVwmhlYPtwKp5R4XwgZg06\n' +
   'eQKG194h6QUd96AutmPyU5m51J3LsSfatnBq4Wa4eXvvTvG6SBVVTrC/j+xPM1wK\n' +

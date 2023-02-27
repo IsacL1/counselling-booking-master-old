@@ -18,15 +18,14 @@ function BookingElement({
     <div className="booking__box">
       <div className="booking__innerbox--left">
         <h3 className="header__heading--sub--alt header__heading--small">{moment(bookingData.bookingStart).format('dddd, MMMM Do YYYY')}</h3>
-        <p>{bookingData.emergencyLv}</p>
-        {/*<p>{bookingData.businessUnit}</p>*/}
+        <p>{bookingData.businessUnit}</p>
         {/*<p>{bookingData.purpose}</p>*/}
         <p>{bookingData.issue}</p>
       </div>
       <div className="booking__innerbox--middle">
         <p>From {startTime} to {endTime}</p>
         <p>Duration {bookingData.duration}hrs</p>
-        {/*<p>Level {roomInfo.floor}, {roomInfo.name}</p>*/}
+        <p>Level {roomInfo.floor}, {roomInfo.name}</p>
         
         {/** floor (Level) = classroom, name = worker name*/}
         <p>Classroom: {roomInfo.floor}, Worker: {roomInfo.name}</p> 

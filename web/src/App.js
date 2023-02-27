@@ -22,7 +22,7 @@ import { getDecodedToken } from './api/token'
 import { makeBooking, deleteBooking, updateStateRoom } from './api/booking'
 import Calendar from './components/Calendar'
 import BookingModal from './components/BookingModal'
-import { floorParams, filterParams, capacityParams, onFilterByFloor, onFilterByFeature, onFilterByCapacity, onFilterByAvailablity } from './helpers/filters'
+import { floorParams, filterParams, capacityParams, onFilterByFloor, onFilterByIssue, onFilterByCapacity, onFilterByAvailablity } from './helpers/filters'
 import { initialRoom } from './helpers/rooms'
 
 class App extends Component {
@@ -40,7 +40,7 @@ class App extends Component {
     checked: null,
     currentRoom: null,
     error: null,
-    //disableRecurring: true
+    disableRecurring: true
   }
 
   // Pass supplied first name, lastname, email & password to the signUp function, returns the user's token
@@ -78,25 +78,29 @@ class App extends Component {
   }
 
   // Makes a booking by updating the database and the React state
-  onMakeBooking = ({ startDate, endDate, issue, emergencyLv, roomId }) => {
-    const bookingData = { startDate, endDate, issue, emergencyLv, roomId }
+  onMakeBooking = ({ startDate, endDate, businessUnit, issue, roomId, recurringData }) => {
+    const bookingData = { startDate, endDate, businessUnit, issue, roomId }
     const existingBookings = this.state.currentRoom.bookings
+  
   /*
   onMakeBooking = ({ startDate, endDate, businessUnit, purpose, roomId, recurringData }) => {
     const bookingData = { startDate, endDate, businessUnit, purpose, roomId }
     const existingBookings = this.state.currentRoom.bookings
-    */
+  */
 
     // Check if there is a clash and, if not, save the new booking to the database
     try {
       makeBooking(
-        { startDate, endDate, issue, emergencyLv, roomId },
+        { startDate, endDate, businessUnit, issue, roomId, recurringData },
         existingBookings
-      )
-      /*makeBooking(
+      )      
+      
+      /*
+      makeBooking(
         { startDate, endDate, businessUnit, purpose, roomId, recurringData },
         existingBookings
-      )*/
+      )
+      */
         .then(updatedRoom => {
           // If the new booking is successfully saved to the database
           alert(`${updatedRoom.name} successfully booked.`)
@@ -129,7 +133,18 @@ class App extends Component {
     const room = this.state.roomData.find(room => room._id === id)
     this.setState({ currentRoom: room })
   }
-
+    // setting the issue filter parameters
+    onToggleIssue = issue => {
+      // Get the filter parameters
+      let filterParams = this.state.filterParams
+      // Find the filter parameter that matches the the passed parameter
+      let issueParam = filterParams.find(param => param.name === issue)
+      // Toggle the value of the parameter, eg if false, set to true
+      issueParam.value = !issueParam.value
+      // Set state with the updated filter parameters
+      this.setState({ filterParams: filterParams })
+    }
+/*
   // setting the feature filter parameters
   onToggleFeature = feature => {
     // Get the filter parameters
@@ -141,7 +156,7 @@ class App extends Component {
     // Set state with the updated filter parameters
     this.setState({ filterParams: filterParams })
   }
-
+*/
   // setting the capacity filter parameters
   onToggleCapacity = capacity => {
     // Get the capacity parameters
@@ -155,7 +170,7 @@ class App extends Component {
   }
 
   // changing the boolean value for the display attribute for the recurring date input
-  /*
+  
   onToggleRecurring = (value) => {
     let disableRecurring
     if (value === 'none') {
@@ -165,7 +180,7 @@ class App extends Component {
     }
     this.setState({disableRecurring: disableRecurring})
   }
-  */
+  
 
   onSetFloorParam = value => {
 		this.setState({ floorParam: value })
@@ -226,7 +241,7 @@ class App extends Component {
       capacityParams,
       floorParam,
       availabilityParam,
-      //disableRecurring,
+      disableRecurring,
       loading
     } = this.state
     const signedIn = !!decodedToken
@@ -237,14 +252,16 @@ class App extends Component {
     const Loading = require('react-loading-animation')
 
     let filteredData = []
-    const featureParams = this.state.filterParams
+    //const featureParams = this.state.filterParams
+    const issueParams = this.state.filterParams
     const date = this.state.currentDate
 
     if (!!roomData) {
       // Send all room data and the selected floor, return filtered floors and store in filteredData
       filteredData = onFilterByFloor(floorParam, roomData)
       // Send the previously filtered data along with the feature params
-      filteredData = onFilterByFeature(featureParams, filteredData)
+      //filteredData = onFilterByFeature(featureParams, filteredData)
+      filteredData = onFilterByIssue(issueParams, filteredData)
       // Send the previously filtered data along with the capacity params
       filteredData = onFilterByCapacity(capacityParams, filteredData)
       // Send the previously filtered data along with the availability
@@ -300,7 +317,8 @@ class App extends Component {
                             <div className="sidebar__box">
                               <FilterElement
                                 onSetFloorParam={this.onSetFloorParam}  // classroom
-                                onToggleFeature={this.onToggleFeature} // Case
+                                //onToggleFeature={this.onToggleFeature} // Case
+                                onToggleIssue={this.onToggleIssue}
                                 onToggleCapacity={this.onToggleCapacity}  // worker & student 1:1
                                 onSetAvailabilityParam={
                                   this.onSetAvailabilityParam
@@ -360,10 +378,10 @@ class App extends Component {
                                 roomData={currentRoom}
                                 onMakeBooking={this.onMakeBooking}
                                 date={calendarDate}
-                                //disableRecurring={disableRecurring}
+                                disableRecurring={disableRecurring}
                                 updateCalendar={setCalendarDate}
                                 onShowBooking={this.onShowBooking}
-                                //onToggleRecurring={this.onToggleRecurring}
+                                onToggleRecurring={this.onToggleRecurring}
                               />
                             </div>
                               <BookingModal

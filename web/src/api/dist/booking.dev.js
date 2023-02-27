@@ -52,12 +52,11 @@ function makeBooking(data, existingBookings) {
     return _init["default"].put("/rooms/".concat(data.roomId), {
       bookingStart: bookingStart,
       bookingEnd: bookingEnd,
+      businessUnit: data.businessUnit,
       issue: data.issue,
-      emergencyLv: data.emergencyLv,
-      //businessUnit: data.businessUnit,
       //purpose: data.purpose,
-      roomId: data.roomId //recurring: data.recurringData
-
+      roomId: data.roomId,
+      recurring: data.recurringData
     }).then(function (res) {
       return res.data;
     })["catch"](function (err) {

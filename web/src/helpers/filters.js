@@ -4,7 +4,7 @@ import { formatTime, timeSelectOptions} from '../helpers/bookingForm'
 // Initial room filter parameters
 // export const floorParams = [ {name: '8', value: false}, {name: '13', value: false}, {name: 'all', value: false}]
 
-// initial feature filter parameters
+// initial issue filter parameters
 export const filterParams = [ 
   {name: 'famIsu', value: false},
   {name: 'stuIsu', value: false},
@@ -43,22 +43,23 @@ export  const onFilterByFloor = (param, filteredData) => {
   }
 }
 
-// Filter data by feature
+// Filter data by issue
 
-export const onFilterByFeature = (params, filteredData) => {
-  params.forEach(feature => {
-    if (feature.name === 'famIsu' && feature.value === true) {
+export const onFilterByIssue = (params, filteredData) => {
+  params.forEach(issue => {
+    if (issue.name === 'famIsu' && issue.value === true) {
       filteredData = filteredData.filter(room => room.assets.famIsu === true)
-    } else if (feature.name === 'stdIsu' && feature.value === true) {
-      filteredData = filteredData.filter(room => room.assets.stdIsu === true)
-    } else if (feature.name === 'healIsu' && feature.value === true) {
+    } else if (issue.name === 'styIsu' && issue.value === true) {
+      filteredData = filteredData.filter(room => room.assets.styIsu === true)
+    } else if (issue.name === 'healIsu' && issue.value === true) {
       filteredData = filteredData.filter(room => room.assets.healIsu === true)
-    } else if (feature.name === 'relatIsu' && feature.value === true) {
+    } else if (issue.name === 'relatIsu' && issue.value === true) {
       filteredData = filteredData.filter(room => room.assets.relatIsu === true)
     }
   })
   return filteredData
 }
+
 /*
 export const onFilterByFeature = (params, filteredData) => {
   params.forEach(feature => {

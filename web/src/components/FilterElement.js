@@ -5,7 +5,8 @@ import { formatTime, startTimeSelectOptions, endTimeSelectOptions } from '../hel
 
 function FilterElement({
   onSetFloorParam,
-  onToggleFeature,
+  onToggleIssue,
+  //onToggleFeature,
   onToggleCapacity,
   onSetAvailabilityParam,
   floorParam,
@@ -37,15 +38,15 @@ function FilterElement({
         </div>
 */}
 
-      <h4 className="form__heading form__heading--filter">Cases</h4>
-        <div onChange={(event) => onToggleFeature(event.target.name)} >
+      <h4 className="form__heading form__heading--filter">Issue</h4>
+        <div onChange={(event) => onToggleIssue(event.target.name)} >
           <div className="form__group">
             <input type="checkbox" id="famIsu" name="famIsu" className="form__input--checkbox" checked={filterParams[0].value} />
             <label for="famIsu" className="form__label form__label--inline">Family Issue</label>
           </div>
-          <div className="form_group">
-            <input type="checkbox" id="stdIsu" name="stdIsu" className="form__input--checkbox" checked={filterParams[1].value} />
-            <label for="stdIsu" className="form__label form__label--inline">Study Issue</label>
+          <div className="form__group">
+            <input type="checkbox" id="styIsu" name="styIsu" className="form__input--checkbox" checked={filterParams[1].value} />
+            <label for="styIsu" className="form__label form__label--inline">Study Issue</label>
           </div>
           <div className="form_group">
             <input type="checkbox" id="healIsu" name="healIsu" className="form__input--checkbox" checked={filterParams[2].value} />

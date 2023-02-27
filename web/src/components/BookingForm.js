@@ -65,17 +65,16 @@ function BookingForm({ onMakeBooking, user, roomData, date, updateCalendar, onSh
             const endTime = formatTime(formData.endTime.value)
             const endDate = [...dateArray, ...endTime]
             // Booking specifics
-            const emergencyLv = formData.emergencyLv.value
-            //const businessUnit = formData.business.value
-            //let recurringEnd = handleEndDate(formData.recurringEndDate.value.split('-'))
-            //const recurringType = formData.recurring.value
-            //let recurringData = handleRecurringData(recurringType, recurringEnd)
+            const businessUnit = formData.business.value
+            let recurringEnd = handleEndDate(formData.recurringEndDate.value.split('-'))
+            const recurringType = formData.recurring.value
+            let recurringData = handleRecurringData(recurringType, recurringEnd)
             const issue = formData.issue.value
             //const purpose = formData.purpose.value
             const description = formData.description.value
             console.log(description)
           //onMakeBooking({ startDate, endDate, businessUnit, purpose, roomId, recurringData })
-          onMakeBooking({ startDate, endDate, issue, emergencyLv, roomId })
+          onMakeBooking({ startDate, endDate, businessUnit, issue, roomId, recurringData })
         }}>
         <div className="content__calendar">
           <Datetime
@@ -127,18 +126,21 @@ function BookingForm({ onMakeBooking, user, roomData, date, updateCalendar, onSh
             </label>
           </div>
           */}
+          
           <div className="form__group">
             <label className="form__label form__label--booking">
-              {'Emergency Level'}
-              <select name="emergencyLv" defaultValue="Do not know" className="form__input form__input--select">
-                <option value="doNotKnow">Do not know</option>
-                <option value="high">High</option>
-                <option value="midium">Midium</option>
-                <option value="low">Low</option>
+              {'Form'}
+              <select name="business" defaultValue="Form 1" className="form__input form__input--select">
+                <option value="Form 1">Form 1</option>
+                <option value="Form 2">Form 2</option>
+                <option value="Form 3">Form 3</option>
+                <option value="Form 4">Form 4</option>
+                <option value="Form 5">Form 5</option>
+                <option value="Form 6">Form 6</option>
               </select>
             </label>
           </div>
-          {/*
+          
           <div className="form__group">
             <label className="form__label form__label--booking">
               {'Recurring'}
@@ -152,28 +154,26 @@ function BookingForm({ onMakeBooking, user, roomData, date, updateCalendar, onSh
               </span>
             </label>
           </div>
-        */}
+        
         {/** Copy from Purpose */}
           <div className="form__group">
             <label className="form__label form__label--booking">
               {'Issue'}
               <select name="issue" className="form__input form__input--select">
                 <option value="famIsu">Family Issue</option>
-                <option value="stdIsu">Study Issue</option>
+                <option value="styIsu">Study Issue</option>
                 <option value="healIsu">health Issue</option>
                 <option value="relatIsu">Relationship Issue</option>
               </select>
             </label>
           </div>
       
-        {/*
           <label className="form__label form__label--booking">
             {'Recurring end date'}
             <input type="date" name="recurringEndDate" disabled={disableRecurring} className="form__input--date"/>
           </label>
-      */}
-
-      {/*
+      
+{/*
           <div className="form__group">
             <label className="form__label form__label--booking">
               {'Purpose'}
@@ -184,7 +184,7 @@ function BookingForm({ onMakeBooking, user, roomData, date, updateCalendar, onSh
               </select>
             </label>
           </div>
-      */}
+    */}
           <div className="form__group">
             <label className="form__label form__label--booking">
               {'Description'}

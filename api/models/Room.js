@@ -9,25 +9,12 @@ const bookingSchema = new Schema({
   bookingEnd: Date,
   startHour: Number,
   duration: Number,
-  issue: { type: String, required: true },
-  emergencyLv: { type: String, required: true },
-  roomId: { type: Schema.ObjectId, ref: 'Room' }
-})
-
-/*
-const bookingSchema = new Schema({
-  _bookingId: Schema.Types.ObjectId,
-  user: { type: Schema.ObjectId, ref: 'User' },
-  bookingStart: Date,
-  bookingEnd: Date,
-  startHour: Number,
-  duration: Number,
   recurring: [],
   businessUnit: { type: String, required: true },
-  purpose: { type: String, required: true },
+  issue: { type: String, required: true },
+  // purpose: { type: String, required: true },
   roomId: { type: Schema.ObjectId, ref: 'Room' }
 })
-*/
 
 // Validation to ensure a room cannot be double-booked
 bookingSchema.path('bookingStart').validate(function(value) {
@@ -89,7 +76,7 @@ const roomSchema = new Schema({
   capacity: Number,
   cases: {
     famIsu: { type: Boolean, default: false },
-    stdIsu: { type: Boolean, default: false },
+    styIsu: { type: Boolean, default: false },
     healIsu: { type: Boolean, default: false },
     relatIsu: { type: Boolean, default: false }
   },
@@ -106,5 +93,5 @@ const roomSchema = new Schema({
   bookings: [bookingSchema]
 })
 
-// const Room = (module.exports = mongoose.model('Room', roomSchema))
 const Room = (module.exports = mongoose.model('Room', roomSchema))
+// const Room = (module.exports = mongoose.model('Room', roomSchema))

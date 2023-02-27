@@ -16,34 +16,21 @@ var bookingSchema = new Schema({
   bookingEnd: Date,
   startHour: Number,
   duration: Number,
+  recurring: [],
+  businessUnit: {
+    type: String,
+    required: true
+  },
   issue: {
     type: String,
     required: true
   },
-  emergencyLv: {
-    type: String,
-    required: true
-  },
+  // purpose: { type: String, required: true },
   roomId: {
     type: Schema.ObjectId,
     ref: 'Room'
   }
-});
-/*
-const bookingSchema = new Schema({
-  _bookingId: Schema.Types.ObjectId,
-  user: { type: Schema.ObjectId, ref: 'User' },
-  bookingStart: Date,
-  bookingEnd: Date,
-  startHour: Number,
-  duration: Number,
-  recurring: [],
-  businessUnit: { type: String, required: true },
-  purpose: { type: String, required: true },
-  roomId: { type: Schema.ObjectId, ref: 'Room' }
-})
-*/
-// Validation to ensure a room cannot be double-booked
+}); // Validation to ensure a room cannot be double-booked
 
 bookingSchema.path('bookingStart').validate(function (value) {
   // Extract the Room Id from the query object
@@ -93,7 +80,7 @@ var roomSchema = new Schema({
       type: Boolean,
       "default": false
     },
-    stdIsu: {
+    styIsu: {
       type: Boolean,
       "default": false
     },
@@ -118,6 +105,5 @@ var roomSchema = new Schema({
   },
   */
   bookings: [bookingSchema]
-}); // const Room = (module.exports = mongoose.model('Room', roomSchema))
-
-var Room = module.exports = mongoose.model('Room', roomSchema);
+});
+var Room = module.exports = mongoose.model('Room', roomSchema); // const Room = (module.exports = mongoose.model('Room', roomSchema))

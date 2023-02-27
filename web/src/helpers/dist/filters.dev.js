@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.onFilterByAvailablity = exports.onFilterByCapacity = exports.onFilterByFeature = exports.onFilterByFloor = exports.capacityParams = exports.filterParams = void 0;
+exports.onFilterByAvailablity = exports.onFilterByCapacity = exports.onFilterByIssue = exports.onFilterByFloor = exports.capacityParams = exports.filterParams = void 0;
 
 var _moment = _interopRequireDefault(require("moment"));
 
@@ -70,26 +70,26 @@ var onFilterByFloor = function onFilterByFloor(param, filteredData) {
       return room.floor === param;
     });
   }
-}; // Filter data by feature
+}; // Filter data by issue
 
 
 exports.onFilterByFloor = onFilterByFloor;
 
-var onFilterByFeature = function onFilterByFeature(params, filteredData) {
-  params.forEach(function (feature) {
-    if (feature.name === 'famIsu' && feature.value === true) {
+var onFilterByIssue = function onFilterByIssue(params, filteredData) {
+  params.forEach(function (issue) {
+    if (issue.name === 'famIsu' && issue.value === true) {
       filteredData = filteredData.filter(function (room) {
         return room.assets.famIsu === true;
       });
-    } else if (feature.name === 'stdIsu' && feature.value === true) {
+    } else if (issue.name === 'styIsu' && issue.value === true) {
       filteredData = filteredData.filter(function (room) {
-        return room.assets.stdIsu === true;
+        return room.assets.styIsu === true;
       });
-    } else if (feature.name === 'healIsu' && feature.value === true) {
+    } else if (issue.name === 'healIsu' && issue.value === true) {
       filteredData = filteredData.filter(function (room) {
         return room.assets.healIsu === true;
       });
-    } else if (feature.name === 'relatIsu' && feature.value === true) {
+    } else if (issue.name === 'relatIsu' && issue.value === true) {
       filteredData = filteredData.filter(function (room) {
         return room.assets.relatIsu === true;
       });
@@ -118,7 +118,7 @@ export const onFilterByFeature = (params, filteredData) => {
 // Filter data by capacity
 
 
-exports.onFilterByFeature = onFilterByFeature;
+exports.onFilterByIssue = onFilterByIssue;
 
 var onFilterByCapacity = function onFilterByCapacity(params, filteredData) {
   var roomsByCapacity = [];
