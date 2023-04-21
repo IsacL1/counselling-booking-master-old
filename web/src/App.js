@@ -397,9 +397,14 @@ class App extends Component {
                     </Fragment>
                   ))} />
 
+<<<<<<< Updated upstream
                 <Route path="/chatroom" 
                   
                 />
+=======
+                <Route path="/charoom" />
+
+>>>>>>> Stashed changes
                 <Route render={({ location }) => <h2>
                       {' '}
                       Page Not Found: {location.pathname}{' '}
